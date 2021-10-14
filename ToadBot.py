@@ -50,7 +50,7 @@ async def on_command_error(ctx, error):
         await ctx.send("You are not cool enough to do that.")
 
 #this starts the loop that is the bot
-#the code essentialy gets stuck here as it just constantly loops over the @bot.whatever things waiting for commands
+#the code essentialy gets stuck here as it just constantly loops over the @bot.whatever things waiting for triggers
 #I think the loop starts at bot = commands.Bot() but am not sure
 bot.run(DontStealMyToken)
 
