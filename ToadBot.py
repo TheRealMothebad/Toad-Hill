@@ -25,4 +25,10 @@ async def test_recieved(ctx: commands.Context):
 async def ping(ctx: commands.Context):
     await ctx.send(f"Pong! {round(bot.latency * 1000)}ms")
 
+@bot.command(name="stop")
+@commands.is_owner()
+async def shutdown(ctx):
+    await ctx.send("seeya")
+    await ctx.bot.close()
+
 bot.run(DontStealMyToken)
