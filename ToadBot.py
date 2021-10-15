@@ -1,57 +1,37 @@
-#you need to run the stuff here for this to all work https://discordpy.readthedocs.io/en/stable/intro.html
-# I also had to run pip install discord to fix an error, but stack overflow has all the info you would need
 from discord.ext import commands
 
-#donno if we need this, might have just been for the mc server lookup shenanegins
 import aiohttp
 
-#have a file named "tok" in the same folder with the code DontStealMyToken = "token"
-#DONT FORGET TO ADD THE TOK FILE TO THE GITIGNORE!
 from tok import DontStealMyToken
 
-#invite your bot to a server with #https://discord.com/oauth2/authorize?client_id=BOT ID HERE&scope=bot
-
-#sets the bot (object?) to be referenced with variable "bot". Also sets the command prefix
-bot = commands.Bot(command_prefix="~")
+bot = commands.Bot(command_prefix=">")
 
 @bot.command(name="hello")
-#You need to structure commands like this, but I don't remember why...
 async def hello_world(ctx: commands.Context):
-    #these strings are optional, but show up when ~help is run
-    "Returns a cliche greeting"
-    #await is an async command that opens a seperate thread, allowing other commands to be run while this one is ongoing
-    #always try to start the new thread as soon as possible as the compute time for code before it makes the bot freeze for that amount of time
-    await ctx.send("Hello, world!")
+    "hello!"
+    
+    await ctx.send("hi, i'm a toad. how about you?")
 
 @bot.command(name="test")
 async def test_recieved(ctx: commands.Context):
-    "Let's you know that the bot is alive"
-    await ctx.send("Test passed!")
+    "it's a test. TEST!"
+    await ctx.send("yup we good, test good test yes test ok good job")
 
 @bot.command(name="ping")
 async def ping(ctx: commands.Context):
     "returns the bot's latency in ms"
-    await ctx.send(f"Pong! {round(bot.latency * 1000)}ms")
+    await ctx.send(f"pling! {round(bot.latency * 1000)}ms")
 
 @bot.command(name="stop")
-#I guess you can add tags like this to specify checks before running a command
-#I stole from the internet though, so don't really know how they work
 @commands.is_owner()
 async def shutdown(ctx):
-    "shuts down bot if command issuer is the same as dev acc for bot"
-    await ctx.send("seeya")
+    "shuts down bot (if command issuer is the same as dev acc for bot)"
+    await ctx.send("ok bye have a good, thanks for having me")
     await ctx.bot.close()
 
-#this is the general catch for errors, not very clean, but it works
 @bot.event
 async def on_command_error(ctx, error):
-    #my approach to this is just have an if else chain to catch errors...
     if isinstance(error, discord.ext.commands.errors.NotOwner):
-        await ctx.send("You are not cool enough to do that.")
+        await ctx.send("You are not cool enough to do that. (make note if this error ever shows up; i have absolutely no idea what it's for)")
 
-#this starts the loop that is the bot
-#the code essentialy gets stuck here as it just constantly loops over the @bot.whatever things waiting for triggers
-#I think the loop starts at bot = commands.Bot() but am not sure
 bot.run(DontStealMyToken)
-
-#if you want code to run after the bot is shut down, put it here
