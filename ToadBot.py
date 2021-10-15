@@ -38,7 +38,7 @@ async def ping(ctx: commands.Context):
 #I stole from the internet though, so don't really know how they work
 @commands.is_owner()
 async def shutdown(ctx):
-    "shuts down bot of command issuer is the same as dev acc for bot"
+    "shuts down bot if command issuer is the same as dev acc for bot"
     await ctx.send("seeya")
     await ctx.bot.close()
 
