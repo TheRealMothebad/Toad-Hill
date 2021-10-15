@@ -1,7 +1,0 @@
-Step 1: go to https://discord.com/developers
-setp 2: probably log in?
-step 3: click "new application" in the top right corner
-step 4: Name your bot and give it a nice picutre
-step 5: go to the "bot" tab on the right and click "add"
-setp 6: copy the token into tok.py
-step 7: run the bot! (you also need to invite it into the server, check the comment in the code for that)

@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 
 import aiohttp
@@ -32,6 +33,7 @@ async def shutdown(ctx):
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, discord.ext.commands.errors.NotOwner):
-        await ctx.send("You are not cool enough to do that. (make note if this error ever shows up; i have absolutely no idea what it's for)")
+        await ctx.send("foolish mortal, you have no power over TobiToadBoat")
 
 bot.run(DontStealMyToken)
+
