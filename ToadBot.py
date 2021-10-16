@@ -33,7 +33,7 @@ async def ping(ctx: commands.Context):
     "returns the bot's latency in ms"
     await ctx.send(f"Pong! {round(bot.latency * 1000)}ms")
 
-@bot.command(name="stop")
+@bot.command(name="stop", aliases=['shutdown', 'end'])
 #I guess you can add tags like this to specify checks before running a command
 #I stole from the internet though, so don't really know how they work
 @commands.is_owner()
