@@ -34,11 +34,12 @@ async def jason(ctx, *msg):
     if msg[0] == "write":
         allTheWords = ""
         for i in range(1, len(msg)):
-            allTheWords += msg[i]
+            allTheWords += msg[i] + " "
         print(allTheWords)
         await ctx.send(allTheWords)
         async with aiofiles.open("./jason.txt", "a+") as jasper:
             await jasper.write(allTheWords)
+            await jasper.write("\n")
             await jasper.close()
 
 

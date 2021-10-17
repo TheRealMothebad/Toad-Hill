@@ -52,7 +52,34 @@ async def hello_world(ctx: commands.Context):
     "chapter selection menu"
     await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
 
-@bot.command(name="stop")
+
+
+
+
+#file handler commands
+@bot.command(name="jason")
+async def jason(ctx, *msg):
+    if msg[0] == "read":
+        async with aiofiles.open("./jason.txt", "r") as jasper:
+            output = await jasper.read()
+            print(jasper)
+            await ctx.send(output)
+            await jasper.close()
+    if msg[0] == "write":
+        allTheWords = ""
+        for i in range(1, len(msg)):
+            allTheWords += msg[i]
+        print(allTheWords)
+        await ctx.send(allTheWords)
+        async with aiofiles.open("./jason.txt", "a+") as jasper:
+            await jasper.write(allTheWords)
+            await jasper.close()
+
+
+    
+
+
+@bot.command(name="stop", aliases=['shutdown', 'end'])
 @commands.is_owner()
 async def shutdown(ctx):
     "shuts down bot (if command issuer is the same as dev acc for bot)"
