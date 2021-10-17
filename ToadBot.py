@@ -30,10 +30,11 @@ async def hello_world(ctx: commands.Context):
 @bot.command(name="readme")
 async def hello_world(ctx: commands.Context):
     "print README.md"
-    with open('./README.md', 'r') as f:
-        await ctx.send(f.read())
+    readme=open("./README.md")
+    await ctx.send(readme.read())
+    readme.close()
 
-@bot.command(name="cp")
+@bot.command(name="chp")
 async def hello_world(ctx: commands.Context):
     "chapter selection menu"
     await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
