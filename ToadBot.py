@@ -4,6 +4,8 @@ from discord.ext import commands
 import aiofiles
 import aiohttp
 
+import json
+
 from tok import DontStealMyToken
 
 bot = commands.Bot(command_prefix="%")
@@ -27,12 +29,22 @@ async def hello_world(ctx: commands.Context):
 async def hello_world(ctx: commands.Context):
     "add to the story"
     await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
+    async with aiofiles.open('./test.json', mode='a+') as f:
+        contents = await f.read()
+    await ctx.send(contents)
 
 @bot.command(name="readme")
 async def hello_world(ctx: commands.Context):
     "print README.md"
     async with aiofiles.open('./README.md', mode='r') as f:
         contents = await f.read()
+    await ctx.send(contents)
+
+@bot.command(name="json")
+async def hello_world(ctx: commands.Context):
+    "read json file entry"
+    with open('./test.json', mode='r') as f:
+        contents = json.load(f.read())
     await ctx.send(contents)
 
 @bot.command(name="chp")
