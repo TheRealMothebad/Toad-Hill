@@ -2,7 +2,7 @@
 # I also had to run pip install discord to fix an error, but stack overflow has all the info you would need
 from discord.ext import commands
 
-#donno if we need this, might have just been for the mc server lookup shenanegins
+#Looks like this is still usefull after all, possibly needed for aio json stuff?
 import aiohttp
 
 #have a file named "tok" in the same folder with the code DontStealMyToken = "token"
@@ -32,6 +32,25 @@ async def test_recieved(ctx: commands.Context):
 async def ping(ctx: commands.Context):
     "returns the bot's latency in ms"
     await ctx.send(f"Pong! {round(bot.latency * 1000)}ms")
+
+#file handler commands
+@bot.command(name="jason")
+async def jason(ctx, *msg):
+    if msg[0] == "read":
+        async with aiofiles.open("./jason.txt", "r") as jasper:
+            await ctx.send(jasper.read())
+            await jasper.close()
+    if msg[0] == "write":
+        allTheWords = ""
+        for i in range(1, len(msg) - 1):
+            allTheWords += msg[i]
+        async with aiofiles.open("./jason.txt", "W") as jasper:
+            await jasper.write(allTheWords)
+            await jasper.close()
+
+
+    
+
 
 @bot.command(name="stop", aliases=['shutdown', 'end'])
 #I guess you can add tags like this to specify checks before running a command
