@@ -53,9 +53,6 @@ async def hello_world(ctx: commands.Context):
     await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
 
 
-
-
-
 #file handler commands
 @bot.command(name="jason")
 async def jason(ctx, *msg):
@@ -68,15 +65,13 @@ async def jason(ctx, *msg):
     if msg[0] == "write":
         allTheWords = ""
         for i in range(1, len(msg)):
-            allTheWords += msg[i]
+            allTheWords += msg[i] + " "
         print(allTheWords)
         await ctx.send(allTheWords)
         async with aiofiles.open("./jason.txt", "a+") as jasper:
             await jasper.write(allTheWords)
-            await jasper.close()
-
-
-    
+            await jasper.write("\n")
+            await jasper.close()    
 
 
 @bot.command(name="stop", aliases=['shutdown', 'end'])
