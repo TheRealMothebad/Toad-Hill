@@ -5,23 +5,38 @@ import aiohttp
 
 from tok import DontStealMyToken
 
-bot = commands.Bot(command_prefix=">")
-
-@bot.command(name="hello")
-async def hello_world(ctx: commands.Context):
-    "hello!"
-    
-    await ctx.send("hi, i'm a toad. how about you?")
+bot = commands.Bot(command_prefix="%")
 
 @bot.command(name="test")
 async def test_recieved(ctx: commands.Context):
-    "it's a test. TEST!"
+    "it's a test"
     await ctx.send("yup we good, test good test yes test ok good job")
 
 @bot.command(name="ping")
 async def ping(ctx: commands.Context):
     "returns the bot's latency in ms"
     await ctx.send(f"pling! {round(bot.latency * 1000)}ms")
+
+@bot.command(name="current")
+async def hello_world(ctx: commands.Context):
+    "print the current progress in the story"
+    await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
+
+@bot.command(name="add")
+async def hello_world(ctx: commands.Context):
+    "add to the story"
+    await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
+
+@bot.command(name="readme")
+async def hello_world(ctx: commands.Context):
+    "print README.md"
+    with open('./README.md', 'r') as f:
+        await ctx.send(f.read())
+
+@bot.command(name="cp")
+async def hello_world(ctx: commands.Context):
+    "chapter selection menu"
+    await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
 
 @bot.command(name="stop")
 @commands.is_owner()
