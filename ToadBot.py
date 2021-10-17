@@ -4,6 +4,7 @@ from discord.ext import commands
 
 #Looks like this is still usefull after all, possibly needed for aio json stuff?
 import aiohttp
+import aiofiles
 
 #have a file named "tok" in the same folder with the code DontStealMyToken = "token"
 #DONT FORGET TO ADD THE TOK FILE TO THE GITIGNORE!
@@ -38,7 +39,9 @@ async def ping(ctx: commands.Context):
 async def jason(ctx, *msg):
     if msg[0] == "read":
         async with aiofiles.open("./jason.txt", "r") as jasper:
-            await ctx.send(jasper.read())
+            output = await jasper.read()
+            print(jasper)
+            await ctx.send(output)
             await jasper.close()
     if msg[0] == "write":
         allTheWords = ""
