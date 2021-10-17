@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+import aiofiles
 import aiohttp
 
 from tok import DontStealMyToken
@@ -30,9 +31,9 @@ async def hello_world(ctx: commands.Context):
 @bot.command(name="readme")
 async def hello_world(ctx: commands.Context):
     "print README.md"
-    readme=open("./README.md")
-    await ctx.send(readme.read())
-    readme.close()
+    async with aiofiles.open('./README.md', mode='r') as f:
+        contents = await f.read()
+    await ctx.send(contents)
 
 @bot.command(name="chp")
 async def hello_world(ctx: commands.Context):
