@@ -1,3 +1,4 @@
+import datetime
 import discord
 from discord.ext import commands
 
@@ -9,11 +10,6 @@ import json
 from tok import DontStealMyToken
 
 bot = commands.Bot(command_prefix="%")
-
-@bot.command(name="_ping")
-async def ping(ctx: commands.Context):
-    "returns the bot's latency in ms"
-    await ctx.send(f"pling! {round(bot.latency * 1000)}ms")
 
 @bot.command(name="current")
 async def hello_world(ctx: commands.Context):
@@ -51,26 +47,39 @@ async def jason(ctx, op, *, msg=None):
         await ctx.send(msg)
         async with aiofiles.open("./story-plaintext.txt", "a+") as folder:
             await folder.write(msg)
-            await folder.write("\n\n")
+            await folder.write("\n")
             await folder.close()
 
-"@bot.command(name="json")
+"""@bot.command(name="json")
 async def hello_world(ctx: commands.Context):
     "read json file entry"
     with open('./test.json', mode='r') as f:
         contents = json.load(f.read())
-    await ctx.send(contents)"
+    await ctx.send(contents)"""
 
 @bot.command(name="chp")
 async def hello_world(ctx: commands.Context):
     "chapter selection menu"
     await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
 
+@bot.command(name="_ping")
+async def ping(ctx: commands.Context):
+    "returns the bot's latency in ms"
+    await ctx.send(f"pling! {round(bot.latency * 1000)}ms")
+
 @bot.command(name="stop", aliases=['shutdown', 'end'])
 @commands.is_owner()
 async def shutdown(ctx):
     "shuts down bot (if command issuer is the same as dev acc for bot)"
-    await ctx.send("ok bye have a good, thanks for having me")
+    await ctx.send("toad bot is departing")
+    async with aiofiles.open("./story-plaintext.txt", "r") as done:
+        readout = await done.read()
+        async with aiofiles.open("./backup.txt", "a+") as bkp:
+            await bkp.write("logoff new message\n")
+#            await bkp.write(datetime.datetime.now())
+            await bkp.write(readout)
+            await bkp.close()
+        await done.close()
     await ctx.bot.close()
 
 @bot.event
