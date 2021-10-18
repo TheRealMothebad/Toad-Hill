@@ -22,28 +22,63 @@ async def ping(ctx: commands.Context):
     "returns the bot's latency in ms"
     await ctx.send(f"Pong! {round(bot.latency * 1000)}ms")
 
-#file handler commands
+"""#file handler commands
 @bot.command(name="jason")
-async def jason(ctx, *msg):
-    if msg[0] == "read":
+async def jason(ctx, *, msg, *abc):
+    if abc[0] == "read":
         async with aiofiles.open("./jason.txt", "r") as jasper:
             output = await jasper.read()
             print(jasper)
             await ctx.send(output)
             await jasper.close()
-    if msg[0] == "write":
-        allTheWords = ""
-        for i in range(1, len(msg)):
+    if abc[0] == "write":
+        for i in range(1, len(abc)):
             allTheWords += msg[i] + " "
-        print(allTheWords)
-        await ctx.send(allTheWords)
+        print(msg)
+        await ctx.send(msg)
         async with aiofiles.open("./jason.txt", "a+") as jasper:
             await jasper.write(allTheWords)
             await jasper.write("\n")
             await jasper.close()
+"""
+
+#file handler commands
+@bot.command(name="jason")
+async def jason(ctx, op, *, msg):
+    if op == "read":
+        async with aiofiles.open("./jason.txt", "r") as jasper:
+            jam = await jasper.read()
+            print(jam)
+            await ctx.send(jam)
+            await jasper.close()
+    if op == "write":
+        print(msg)
+        await ctx.send(msg)
+        async with aiofiles.open("./jason.txt", "a+") as jasper:
+            await jasper.write(msg)
+            await jasper.write("\n")
+            await jasper.close()
 
 
-    
+"""
+
+#file handler commands
+@bot.command(name="jason")
+async def jason(ctx, *, msg, *abc):
+    if aaaaa == "read":
+        async with aiofiles.open("./jason.txt", "r") as jasper:
+            output = await jasper.read()
+            print(jasper)
+            await ctx.send(output)
+            await jasper.close()
+    if aaaaa == "write":
+        print(msg)
+        await ctx.send(msg)
+        async with aiofiles.open("./jason.txt", "a+") as jasper:
+            await jasper.write(msg)
+            await jasper.write("\n")
+            await jasper.close
+"""
 
 
 @bot.command(name="stop", aliases=['shutdown', 'end'])
