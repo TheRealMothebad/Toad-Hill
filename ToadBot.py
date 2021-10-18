@@ -20,23 +20,6 @@ async def hello_world(ctx: commands.Context):
     "print the current progress in the story"
     await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
 
-"""#file handler commands
-@bot.command(name="jason")
-async def jason(ctx, op, *, msg=None):
-    "file i/o. use 'jason read' to show contents, and 'jason write [words]' to append."
-    if op == "read":
-        async with aiofiles.open("./jason.txt", "r") as jasper:
-            jam = await jasper.read()
-            print(jam)
-            await ctx.send(jam)
-            await jasper.close()
-    if op == "write":
-        await ctx.send(msg)
-        async with aiofiles.open("./jason.txt", "a+") as jasper:
-            await jasper.write(msg)
-            await jasper.write("\n")
-            await jasper.close()"""
-
 #implement jason as plaintext file adding
 @bot.command(name="story-p")
 async def jason(ctx, op, *, msg=None):
@@ -79,4 +62,3 @@ async def on_command_error(ctx, error):
         await ctx.send("foolish mortal, you have no power over TobiToadBoat")
 
 bot.run(DontStealMyToken)
-
