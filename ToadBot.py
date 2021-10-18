@@ -40,6 +40,23 @@ async def hello_world(ctx: commands.Context):
         contents = await f.read()
     await ctx.send(contents)
 
+#file handler commands
+@bot.command(name="jason")
+async def jason(ctx, op, *, msg=None):
+    "file i/o. use 'jason read' to show contents, and 'jason write [words]' to append."
+    if op == "read":
+        async with aiofiles.open("./jason.txt", "r") as jasper:
+            jam = await jasper.read()
+            print(jam)
+            await ctx.send(jam)
+            await jasper.close()
+    if op == "write":
+        await ctx.send(msg)
+        async with aiofiles.open("./jason.txt", "a+") as jasper:
+            await jasper.write(msg)
+            await jasper.write("\n")
+            await jasper.close()
+
 @bot.command(name="json")
 async def hello_world(ctx: commands.Context):
     "read json file entry"
@@ -51,28 +68,6 @@ async def hello_world(ctx: commands.Context):
 async def hello_world(ctx: commands.Context):
     "chapter selection menu"
     await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
-
-
-#file handler commands
-@bot.command(name="jason")
-async def jason(ctx, *msg):
-    if msg[0] == "read":
-        async with aiofiles.open("./jason.txt", "r") as jasper:
-            output = await jasper.read()
-            print(jasper)
-            await ctx.send(output)
-            await jasper.close()
-    if msg[0] == "write":
-        allTheWords = ""
-        for i in range(1, len(msg)):
-            allTheWords += msg[i] + " "
-        print(allTheWords)
-        await ctx.send(allTheWords)
-        async with aiofiles.open("./jason.txt", "a+") as jasper:
-            await jasper.write(allTheWords)
-            await jasper.write("\n")
-            await jasper.close()    
-
 
 @bot.command(name="stop", aliases=['shutdown', 'end'])
 @commands.is_owner()
