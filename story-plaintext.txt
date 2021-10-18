@@ -1,0 +1,6 @@
+TOAD HILL episode 1
+aldskfjasdlkfjlkasdfjlkadsjflasjflkadjkladsfjldasflsflasdfjlksfjlasdkfjas
+tehre's nothing here yet.
+i could put "the story so far" in here
+then you can branch off.
+how do we manage branching in a way that lets all players see each other's movements and also lets each one act completely independently?
