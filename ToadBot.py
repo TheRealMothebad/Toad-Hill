@@ -10,19 +10,7 @@ from tok import DontStealMyToken
 
 bot = commands.Bot(command_prefix="%")
 
-@bot.command(name="Za")
-async def ah(ctx: commands.Context):
-    "toad"
-    await ctx.send('''```words
-words
-words```''')
-
-@bot.command(name="Ztest")
-async def test_recieved(ctx: commands.Context):
-    "it's a test"
-    await ctx.send("yup we good, test good test yes test ok good job")
-
-@bot.command(name="Zping")
+@bot.command(name="_ping")
 async def ping(ctx: commands.Context):
     "returns the bot's latency in ms"
     await ctx.send(f"pling! {round(bot.latency * 1000)}ms")
@@ -32,7 +20,7 @@ async def hello_world(ctx: commands.Context):
     "print the current progress in the story"
     await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
 
-#file handler commands
+"""#file handler commands
 @bot.command(name="jason")
 async def jason(ctx, op, *, msg=None):
     "file i/o. use 'jason read' to show contents, and 'jason write [words]' to append."
@@ -47,12 +35,12 @@ async def jason(ctx, op, *, msg=None):
         async with aiofiles.open("./jason.txt", "a+") as jasper:
             await jasper.write(msg)
             await jasper.write("\n")
-            await jasper.close()
+            await jasper.close()"""
 
 #implement jason as plaintext file adding
-@bot.command(name="story-plaintext")
+@bot.command(name="story-p")
 async def jason(ctx, op, *, msg=None):
-    "use '%story-plaintext read' or '%story-plaintext add [words]'."
+    "plaintext: use '%story-p read' or '%story-p add [words]'."
     if op == "read":
         async with aiofiles.open("./story-plaintext.txt", "r") as folder:
             readout = await folder.read()
@@ -66,12 +54,12 @@ async def jason(ctx, op, *, msg=None):
             await folder.write("\n\n")
             await folder.close()
 
-@bot.command(name="json")
+"@bot.command(name="json")
 async def hello_world(ctx: commands.Context):
     "read json file entry"
     with open('./test.json', mode='r') as f:
         contents = json.load(f.read())
-    await ctx.send(contents)
+    await ctx.send(contents)"
 
 @bot.command(name="chp")
 async def hello_world(ctx: commands.Context):
