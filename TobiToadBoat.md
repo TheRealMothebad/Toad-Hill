@@ -1,1 +1,0 @@
-I'm trying to figure bots out, so since i'm testing it on the toad hill discord server, i'll develop it in this branch of this repo.
