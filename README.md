@@ -1,6 +1,8 @@
 # Toad-Hill
 A Toad Hill production
 
+make toad game
+
 Tobin's test branch:
 trying to set up both the story architecture and the bot to manage i/o
 I'm setting this up more as a story editing thing, so we can handle branching between all the characters and individual story segments, but also let everyone see each other's movements...
