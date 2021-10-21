@@ -43,19 +43,19 @@ async def ping(ctx: commands.Context):
     "returns the bot's latency in ms"
     await ctx.send(f"pling! {round(bot.latency * 1000)}ms")
 
-@bot.command(name="stop", aliases=['shutdown', 'end'])
+@bot.command(name="stop", aliases=['shutdown', 'end', 'quit', 'exit'])
 @commands.is_owner()
 async def shutdown(ctx):
-    "shuts down bot (if command issuer is the same as dev acc for bot)"
+    "shuts down bot (provided command issuer is the same as dev acc for bot)"
     await ctx.send("toad bot is departing")
-    async with aiofiles.open("./story-plaintext.txt", "r") as done:
-        readout = await done.read()
+    async with aiofiles.open("./story-plaintext.txt", "r") as latest:
+        readout = await latest.read()
         async with aiofiles.open("./backup.txt", "a+") as bkp:
-            await bkp.write("logoff new message\n")
-#            await bkp.write(datetime.datetime.now())
+            await bkp.write("\n\nToadBot signing off at ")
+            await bkp.write(str(datetime.datetime.now()) + "::\n")
             await bkp.write(readout)
             await bkp.close()
-        await done.close()
+        await latest.close()
     await ctx.bot.close()
 
 @bot.event
