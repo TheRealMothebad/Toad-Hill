@@ -9,17 +9,11 @@ import json
 
 from tok import DontStealMyToken
 
-bot = commands.Bot(command_prefix="%")
+bot = commands.Bot(command_prefix=")")
 
-@bot.command(name="current")
-async def hello_world(ctx: commands.Context):
-    "print the current progress in the story"
-    await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
-
-#implement jason as plaintext file adding
-@bot.command(name="story-p")
-async def jason(ctx, op, *, msg=None):
-    "plaintext: use '%story-p read' or '%story-p add [words]'."
+@bot.command(name="storyp")
+async def storyp(ctx, op, *, msg=None):
+    "plaintext: use ')storyp read' or ')storyp add [words]'."
     if op == "read":
         async with aiofiles.open("./story-plaintext.txt", "r") as folder:
             readout = await folder.read()
@@ -34,7 +28,7 @@ async def jason(ctx, op, *, msg=None):
             await folder.close()
 
 @bot.command(name="chp")
-async def hello_world(ctx: commands.Context):
+async def chp(ctx: commands.Context):
     "chapter selection menu"
     await ctx.send("hi sorry this feature doesn't actually exist yet, we'll get there")
 
