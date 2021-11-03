@@ -23,13 +23,18 @@ print(y["player"])
 
 # read a file
 
-with open("./toad-archives.json", "r+") as archive:
+with open("./toad-archives.json", "r") as archive:
     n = archive.read()
-    k = json.loads(n)
-    print(k)
-    print(k["player"])
-    #replace value
-    k["player"] = "geurauldde"
-    print(k)
-    print(k["player"])
+    archive.close()
+    
+k = json.loads(n)
+print(k)
+print(k["player"])
+#replace value
+k["player"] = "geurauldde"
+print(k)
+print(k["player"])
+
+with open("./toad-archives.json", "w") as archive:
+    archive.write(json.dumps(k))
     archive.close()
