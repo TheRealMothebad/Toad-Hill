@@ -28,4 +28,8 @@ with open("./toad-archives.json", "r+") as archive:
     k = json.loads(n)
     print(k)
     print(k["player"])
+    #replace value
+    k["player"] = "geurauldde"
+    print(k)
+    print(k["player"])
     archive.close()
