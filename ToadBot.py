@@ -8,7 +8,6 @@ from discord.ext import commands
 import aiohttp
 import aiofiles
 
-#we're not actually using this yet but why not have it here, ya know?
 import json
 
 #have a file named "tok" in the same folder with the code DontStealMyToken = "token"
@@ -38,7 +37,7 @@ async def ping(ctx: commands.Context):
 
 @bot.command(name="io")
 async def io(ctx, op, *, msg=None):
-    "use '~io read' or '~io write <text>'"
+    "use '~io read' or '~io add <text>'"
     if op == "read":
         async with aiofiles.open("./story-plaintext.txt", "r") as folder:
             readout = await folder.read()
@@ -54,22 +53,24 @@ async def io(ctx, op, *, msg=None):
 
 # right now jason function looks the same as file i/o, so we can work on making it deal with .json files, but the basic read/write is working
 # i think basically 'jason' is just our test function right? so like we can make sure 'read' and 'write' work, having one of the function's arguments be the variable and another be the value, and then once that's all figured out it'll be implemented more on the back end?
-"""
+
 @bot.command(name="jason")
-async def jason(ctx, op, *, msg=None):
-    "use '~jason read' or '~jason write <text>'"
+async def jason(ctx, op, key, *, val=None):
+    "'~jason read [key]', '~jason write [key] [value]', or '~jason dump'"
+    async with aiofiles.open("./toad-archives.json", "r") as jasper:
+        readout = await jasper.read()
+        await jasper.close()
+        parse = await json.loads(readout)
+    if op == "dump":
+        await ctx.send(parse)
     if op == "read":
-        async with aiofiles.open("./toad-archives.json", "r") as jasper:
-            readout = await jasper.read()
-            print(readout)
-            await ctx.send(readout)
+        await ctx.send(parse[key])
+    if op == "write":
+        parse[key] = val
+        async with aiofiles.open("./toad-archives.json", "w") as jasper:
+            await jasper.write(json.dumps(parse))
             await jasper.close()
-    if op == "add":
-        await ctx.send(msg)
-        async with aiofiles.open("./toad-archives.json", "a+") as jasper:
-            await jasper.write(msg)
-            await jasper.close()
-"""
+
     
 
 
