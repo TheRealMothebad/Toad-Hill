@@ -59,16 +59,15 @@ async def io(ctx, op, *, msg=None):
 async def jason(ctx, op, *, msg=None):
     "use '~jason read' or '~jason write <text>'"
     if op == "read":
-        async with aiofiles.open("./story-plaintext.txt", "r") as jasper:
+        async with aiofiles.open("./toad-archives.json", "r") as jasper:
             readout = await jasper.read()
             print(readout)
             await ctx.send(readout)
             await jasper.close()
     if op == "add":
         await ctx.send(msg)
-        async with aiofiles.open("./story-plaintext.txt", "a+") as jasper:
+        async with aiofiles.open("./toad-archives.json", "a+") as jasper:
             await jasper.write(msg)
-            await jasper.write("\n")
             await jasper.close()
 """
     
