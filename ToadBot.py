@@ -55,8 +55,11 @@ async def io(ctx, op, *, msg=None):
 @bot.command(name="jason")
 async def jason(ctx, op, key=None, *, val=None):
     "'~jason read [key]', '~jason write [key] [value]', or '~jason dump'"
-#    if op == "dump":
-#        await ctx.send(readout)
+    if op == "dump":
+        async with aiofiles.open("./toad-archives.json", "r") as jasper:
+            readout = await jasper.read()
+            await ctx.send(readout)
+            await jasper.close()
     if op == "read":
         async with aiofiles.open("./toad-archives.json", "r") as jasper:
             readout = await jasper.read()
