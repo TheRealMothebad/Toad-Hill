@@ -34,7 +34,7 @@ async def ping(ctx: commands.Context):
     await ctx.send(f"Pong! {round(bot.latency * 1000)}ms")
 
 #file handler commands
-
+"""
 @bot.command(name="io")
 async def io(ctx, op, *, msg=None):
     "use '~io read' or '~io add <text>'"
@@ -50,23 +50,25 @@ async def io(ctx, op, *, msg=None):
             await folder.write(msg)
             await folder.write("\n")
             await folder.close()
-
-# right now jason function looks the same as file i/o, so we can work on making it deal with .json files, but the basic read/write is working
-# i think basically 'jason' is just our test function right? so like we can make sure 'read' and 'write' work, having one of the function's arguments be the variable and another be the value, and then once that's all figured out it'll be implemented more on the back end?
+"""
 
 @bot.command(name="jason")
-async def jason(ctx, op, key, *, val=None):
+async def jason(ctx, op, key=None, *, val=None):
     "'~jason read [key]', '~jason write [key] [value]', or '~jason dump'"
-    async with aiofiles.open("./toad-archives.json", "r") as jasper:
-        readout = await jasper.read()
-        await jasper.close()
-        parse = await json.loads(readout)
-    if op == "dump":
-        await ctx.send(parse)
+#    if op == "dump":
+#        await ctx.send(readout)
     if op == "read":
-        await ctx.send(parse[key])
+        async with aiofiles.open("./toad-archives.json", "r") as jasper:
+            readout = await jasper.read()
+            parse = json.loads(readout)
+            await ctx.send(parse[key])
+            await jasper.close()
     if op == "write":
-        parse[key] = val
+        async with aiofiles.open("./toad-archives.json", "r") as jasper:
+            readout = await jasper.read()
+            parse = json.loads(readout)
+            await jasper.close()
+        parse[key] = str(val)
         async with aiofiles.open("./toad-archives.json", "w") as jasper:
             await jasper.write(json.dumps(parse))
             await jasper.close()
