@@ -10,7 +10,7 @@ import aiofiles
 
 import json
 
-#have a file named "tok" in the same folder with the code DontStealMyToken = "token"
+#have a file named "tok.py" in the same folder with the code DontStealMyToken = "token"
 #DONT FORGET TO ADD THE TOK FILE TO THE GITIGNORE!
 from tok import DontStealMyToken
 
