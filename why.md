@@ -21,11 +21,11 @@ why the toads. what's the direction here
 
 
 - thinking of it like an rpg a little bit though, can it not be like that kinda?
+
 - rachmaninoff piano concerto?
   - or chiptune music arranged so that it could be played on the piano all heartfelt
+- it would be really fun to pair live stuff with like chiptune, like a string quartet & little square wave synth sounds from beepbox together for the ball
 
 
 
 i want you to play this game in the evening with a cup of tea at the table, and a laptop. it's a fun little safe little story. what ~does~ happen if you attack the toads? then you've just made a different game. with something zork-like you could take so many different roads
-
-how long are sherlock holmes novels? they seem very short but i like that length. little installments
