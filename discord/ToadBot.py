@@ -9,7 +9,7 @@ import aiohttp
 
 import json
 
-#have a file named "tok" in the same folder with the code DontStealMyToken = "token"
+#have a file named "tok.py" in the same folder with the code DontStealMyToken = "token"
 #DONT FORGET TO ADD THE TOK FILE TO THE GITIGNORE!
 from tok import DontStealMyToken
 
@@ -33,7 +33,7 @@ async def ping(ctx: commands.Context):
     await ctx.send(f"Pong! {round(bot.latency * 1000)}ms")
 
 #file handler commands
-"""
+
 @bot.command(name="io")
 async def io(ctx, op, *, msg=None):
     "use '~io read' or '~io add <text>'"
@@ -49,7 +49,7 @@ async def io(ctx, op, *, msg=None):
             await folder.write(msg)
             await folder.write("\n")
             await folder.close()
-"""
+
 
 @bot.command(name="jason")
 async def jason(ctx, op, key=None, *, val=None):
