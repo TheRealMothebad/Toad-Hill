@@ -2,6 +2,7 @@
 A Toad Hill production<br />
 Toad Code.
 <br />
+structure brainstorm (objects): [google doc](https://docs.google.com/document/d/16jl7XO-29eVHYZbQqHHwulq8Uk0VHl2lobnW14eOpwM/edit?usp=sharing)<br />
 Link to lore: https://docs.google.com/document/d/18cSac9gC4KKNzgSY6ALmh9VTieL2en9fhQKrmIdDlSU/edit?usp=sharing
 
 ## Running ToadBot.py through a discord bot
