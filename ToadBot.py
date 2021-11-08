@@ -19,6 +19,8 @@ from tok import DontStealMyToken
 #sets the bot (object?) to be referenced with variable "bot". Also sets the command prefix
 bot = commands.Bot(command_prefix="~")
 
+state = "uwu"
+
 @bot.command(name="test")
 #You need to structure commands like this, but I don't remember why...
 async def hello_world(ctx: commands.Context):
@@ -38,6 +40,7 @@ async def ping(ctx: commands.Context):
 async def add(ctx: commands.Context):
     "add a section to the world"
     state = "add description"
+    await ctx.send("the next message you write will be recorded as the 'description' field")
 
 @bot.event
 async def on_message(message):
@@ -47,6 +50,7 @@ async def on_message(message):
 #where does this need to get defined??
 async def message_handler(message):
     if (state == "add description"):
+        ctx.send("message_handler(): 'add description' state detected. proceeding to add_description function")
         add_description(message.content)
 
 async def add_description(mssg): #do you need to specify that as the argument?
