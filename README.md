@@ -6,6 +6,7 @@
 	- discord bot development
 		- this bit forked from https://github.com/TheRealMothebad/Toad-Hill
 	- also this is very cool https://github.com/Hyprlynk/toadRL
+	- brainstorm: structure and figuring out objects to track: https://docs.google.com/document/d/16jl7XO-29eVHYZbQqHHwulq8Uk0VHl2lobnW14eOpwM/edit?usp=sharing
 - working on the music
 	- "why put a toad in the context of an orchestra when you could put an orchestra in the context of a toad"
 	- the idea that you're using a orchestra to talk about toads. (See note in music folder, "postmodern-note.pdf")
