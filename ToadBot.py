@@ -17,14 +17,15 @@ from tok import DontStealMyToken
 #invite your bot to a server with #https://discord.com/oauth2/authorize?client_id=BOT ID HERE&scope=bot
 
 #sets the bot (object?) to be referenced with variable "bot". Also sets the command prefix
-bot = commands.Bot(command_prefix="~")
+bot = commands.Bot(command_prefix="/")
 
+# filler
 state = "uwu"
 
 @bot.command(name="test")
 #You need to structure commands like this, but I don't remember why...
 async def hello_world(ctx: commands.Context):
-    #these strings are optional, but show up when ~help is run
+    #these strings are optional, but show up when /help is run
     "Lets you know that the bot is alive"
     #await is an async command that opens a seperate thread, allowing other commands to be run while this one is ongoing
     #always try to start the new thread as soon as possible as the compute time for code before it makes the bot freeze for that amount of time
@@ -65,7 +66,7 @@ async def add_description(mssg): #do you need to specify that as the argument?
 
 @bot.command(name="io")
 async def io(ctx, op, *, msg=None):
-    "use '~io read' or '~io add <text>'"
+    "use '/io read' or '/io add <text>'"
     if op == "read":
         async with aiofiles.open("./story-plaintext.txt", "r") as folder:
             readout = await folder.read()
@@ -82,7 +83,7 @@ async def io(ctx, op, *, msg=None):
 
 @bot.command(name="jason")
 async def jason(ctx, op, key=None, *, val=None):
-    "'~jason read [key]', '~jason write [key] [value]', or '~jason dump'"
+    "'/jason read [key]', '/jason write [key] [value]', or '/jason dump'"
     if op == "dump":
         async with aiofiles.open("./toad-archives.json", "r") as jasper:
             readout = await jasper.read()
@@ -130,7 +131,7 @@ async def shutdown(ctx):
 async def on_command_error(ctx, error):
     #my approach to this is just have an if else chain to catch errors...
     if isinstance(error, discord.ext.commands.errors.NotOwner):
-        await ctx.send("You are not cool enough to do that.")
+        await ctx.send("foolish mortal, you have no power over toad bot")
 
 #this starts the loop that is the bot
 #the code essentialy gets stuck here as it just constantly loops over the @bot.whatever things waiting for triggers
