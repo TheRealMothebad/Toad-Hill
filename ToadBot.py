@@ -33,6 +33,30 @@ async def ping(ctx: commands.Context):
     "returns the bot's latency in ms"
     await ctx.send(f"Pong! {round(bot.latency * 1000)}ms")
 
+# description
+@bot.command(name="add")
+async def add(ctx: commands.Context):
+    "add a section to the world"
+    state = "add description"
+
+@bot.event
+async def on_message(message):
+    bot.loop.create_task(message_handler(message))
+    await bot.process_commands(message)
+
+#where does this need to get defined??
+async def message_handler(message):
+    if (state == "add description"):
+        add_description(message.content)
+
+async def add_description(mssg): #do you need to specify that as the argument?
+    async with aiofiles.open("./desc.txt", "a+") as desc:
+        await desc.write(mssg)
+        await desc.close()
+    
+
+
+
 #file handler commands
 
 @bot.command(name="io")
