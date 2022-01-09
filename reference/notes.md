@@ -13,8 +13,6 @@ Tree ID exercise (side quest)
 Chicken Guitar?
 The Chickens of Door No. 6
 fable
-church "cishet is risen"
-       main antagonist, the church of cishet
 "Me, holding my package of sliced ham like it's a human baby: ..."
 The starling and the kingfisher
 Spinach and dandelion greens
