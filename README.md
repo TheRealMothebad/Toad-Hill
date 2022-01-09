@@ -13,6 +13,6 @@ toads.
 
 ## reference:
 - [lore](https://docs.google.com/document/d/18cSac9gC4KKNzgSY6ALmh9VTieL2en9fhQKrmIdDlSU/edit?usp=sharing) of the toads
-- [misc. notes](notes.md)
+- [misc. notes](reference/notes.md)
 
 
