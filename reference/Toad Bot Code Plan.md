@@ -3,7 +3,7 @@ _and other sketchings-out of the project_
 
 -----------------
 
-(in case this isn't displaying right: [Toad Bot Code Plan](Toad%20Bot%20Code%20Plan.pdf))
+(in case this isn't displaying right, [here](Toad%20Bot%20Code%20Plan.pdf)'s a PDF)
 
 json stuff: tracking player position, map info (is any of this procedurally generated? or will it all be fixed?), any other player data
 
