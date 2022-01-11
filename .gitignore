@@ -1,4 +1,7 @@
 tok.py
-__pycache__
+tok.cpython-39.pyc
 *~
+.mscbackup
+tok.cpython-37.pyc
+__pycache__
 .obsidian/
