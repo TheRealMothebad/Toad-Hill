@@ -1,0 +1,3 @@
+[submodule "toadRL"]
+	path = toadRL
+	url = https://github.com/hyprlynk/toadRL.git
