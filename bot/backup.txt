@@ -1,0 +1,37 @@
+
+
+ToadBot signing off at 2022-06-24 19:59:15.550967::
+TOAD HILL ep. 1
+
+
+ToadBot signing off at 2022-06-24 20:07:34.867814::
+TOAD HILL ep. 1
+
+
+ToadBot signing off at 2022-06-24 20:08:18.165892::
+TOAD HILL ep. 1
+
+---- testing starting here ----
+
+
+ToadBot signing off at 2022-06-24 20:18:07.670413::
+latest story-plaintext.txt:
+TOAD HILL ep. 1
+and so the beans begin...
+
+latest toad-archives.json:
+{"sector id": 15, "player": "tub", "toads": 74, "sector name": "main hall", "new-key": "yes i can"}
+
+:: ToadBot signing off at 2022-06-24 20:20:41.028687
+:: latest story-plaintext.txt:
+TOAD HILL ep. 1
+and so the beans begin...
+:: latest toad-archives.json:
+{"sector id": 15, "player": "tub", "toads": 74, "sector name": "main hall", "new-key": "yes i can"}
+
+---- ToadBot signing off at 2022-06-24 20:21:30.470059 ----
+:: latest story-plaintext.txt:
+TOAD HILL ep. 1
+and so the beans begin...
+:: latest toad-archives.json:
+{"sector id": 15, "player": "tub", "toads": 74, "sector name": "main hall", "new-key": "yes i can"}

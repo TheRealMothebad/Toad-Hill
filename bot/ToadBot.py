@@ -76,8 +76,6 @@ async def jason(ctx, op, key=None, *, val=None):
             await jasper.write(json.dumps(parse))
             await jasper.close()
 
-    
-
 
 @bot.command(name="stop", aliases=['shutdown', 'end', 'quit', 'exit'])
 @commands.is_owner() #I guess you can add tags like this to specify checks before running a command
@@ -85,15 +83,24 @@ async def jason(ctx, op, key=None, *, val=None):
 async def shutdown(ctx):
     "shuts down bot (provided command issuer is the same as dev acc for bot)"
     await ctx.send("toad bot is departing")
+    print(":: ToadBot signing off at " + str(datetime.datetime.now()))
     # output the story so far to backup.txt with timestamp when you exit
-    async with aiofiles.open("./story-plaintext.txt", "r") as latest:
-        readout = await latest.read()
-        async with aiofiles.open("./backup.txt", "a+") as bkp:
-            await bkp.write("\n\nToadBot signing off at ")
-            await bkp.write(str(datetime.datetime.now()) + "::\n")
+    async with aiofiles.open("./backup.txt", "a+") as bkp:
+        await bkp.write("\n\n---- ToadBot signing off at ")
+        await bkp.write(str(datetime.datetime.now()) + " ----\n")
+        await bkp.write(":: latest story-plaintext.txt:\n")
+        print("writing latest backup of ./story-plaintext.txt to ./backup.txt...")
+        async with aiofiles.open("./story-plaintext.txt", "r") as latest:
+            readout = await latest.read()
             await bkp.write(readout)
-            await bkp.close()
-        await latest.close()
+            await latest.close()
+        await bkp.write(":: latest toad-archives.json:\n")
+        print("writing latest backup of ./toad-archives.json to ./backup.txt...")
+        async with aiofiles.open("./toad-archives.json", "r") as latest:
+            readout = await latest.read()
+            await bkp.write(readout)
+            await latest.close()
+        await bkp.close()
     await ctx.bot.close()
 
 
