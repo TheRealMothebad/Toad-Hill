@@ -25,7 +25,7 @@ bot = commands.Bot(command_prefix="~")
 @bot.command(name="test")
 async def test(ctx: commands.Context):
     # these strings are optional, but show up when ~help is run
-    "Lets you know that the bot is alive"
+    "lets you know that the bot is alive"
     # await is an async command that opens a seperate thread, allowing other commands to be run while this one is ongoing
     # always try to start the new thread as soon as possible as the compute time for code before it makes the bot freeze for that amount of time
     await ctx.send("Test passed!")
@@ -37,8 +37,7 @@ async def ping(ctx: commands.Context):
 
 @bot.command(name="io")
 async def io(ctx, op, *, msg=None):
-    "interact with The File;
-use '~io read' or '~io add <text>'"
+    "interact with The File; use '~io read' or '~io add <text>'"
     if op == "read":
         async with aiofiles.open("./story-plaintext.txt", "r") as folder:
             readout = await folder.read()
@@ -55,9 +54,7 @@ use '~io read' or '~io add <text>'"
 
 @bot.command(name="jason")
 async def jason(ctx, op, key=None, *, val=None):
-    "interact with toad-archive.json
-(this is a test function; you won't run this manually later on);
-'~jason read [key]', '~jason write [key] [value]', or '~jason dump'"
+    "use '~jason read [key]', '~jason write [key] [value]', or '~jason dump'"
     if op == "dump":
         async with aiofiles.open("./toad-archives.json", "r") as jasper:
             readout = await jasper.read()
