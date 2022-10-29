@@ -55,29 +55,23 @@ async def io(ctx, op, *, msg=None):
 @bot.command(name="audioo")
 # this should say join(ctx, self): but that's making it freeze
 async def audioo(ctx):
-    "join voice channel of command issuer and start playing ominous music"
+    "join voice channel of issuer and play john (r)'s intro music"
     await ctx.send("note: you must be in a voice channel for this to work")
     issuer = ctx.message.author
     voice_channel = issuer.voice.channel
     await ctx.send("attempting to join " + str(issuer) + "'s voice channel: " + str(voice_channel))
-    await ctx.send("channel id: " + str(voice_channel.id))
     voice = discord.utils.get(ctx.guild.voice_channels, name=voice_channel.name)
-    await ctx.send("voice: " + str(voice))
     # requires PyNaCl library (pip install pynacl)
     vc = await voice.connect()
-    #voice_client = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
-    #await ctx.send("voice_client: " + str(voice_client))
-    #if voice_client == None:
-        #await ctx.send("no voice_client; using voice.connect()")
-        #await voice.connect()
-    #else:
-        #await ctx.send("voice_client exists; moving client to channel")
-        #await voice_client.move_to(voice_channel)
 
-    vc.play(discord.FFmpegPCMAudio(executable="/usr/bin/ffmpeg", source="/home/tobin/Music/bluejay-mscz.wav"))
+    # wait for the join chime
+    await ctx.send("Now playing 'Toad Hill Ep. 2 Intro-y Bits' [0:54] by John Reed...")
+    await ctx.send("Commands issued during the track's duration will not be processed until after the track has ended. Good luck!")
+    time.sleep(1)
+    vc.play(discord.FFmpegPCMAudio(executable="/usr/bin/ffmpeg", source="../music/john/intro-johnr.wav"))
     # sleep while audio is playing then disconnect
     while vc.is_playing():
-        sleep(.1)
+        time.sleep(.1)
     await vc.disconnect()
 
 
