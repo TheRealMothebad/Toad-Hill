@@ -35,3 +35,16 @@ TOAD HILL ep. 1
 and so the beans begin...
 :: latest toad-archives.json:
 {"sector id": 15, "player": "tub", "toads": 74, "sector name": "main hall", "new-key": "yes i can"}
+
+---- ToadBot signing off at 2022-10-29 11:01:26.042908 ----
+:: latest story-plaintext.txt:
+TOAD HILL ep. 1
+:: latest toad-archives.json:
+{"sector name": "main hall", "sector id": 15, "player": "Egg on Toast"}
+
+
+---- ToadBot signing off at 2022-10-29 11:03:46.229331 ----
+:: latest story-plaintext.txt:
+TOAD HILL ep. 1
+:: latest toad-archives.json:
+{"sector name": "Main Hall", "sector id": 15, "player": "Egg on Toast"}
