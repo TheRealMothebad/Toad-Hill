@@ -11,6 +11,7 @@ import aiohttp
 import aiofiles
 
 import json
+import time
 
 #have a file named "tok.py" in the same folder with the code DontStealMyToken = "token"
 #DONT FORGET TO ADD THE TOK FILE TO THE GITIGNORE!
@@ -51,6 +52,35 @@ async def io(ctx, op, *, msg=None):
             await folder.write("\n")
             await folder.close()
 
+@bot.command(name="audioo")
+# this should say join(ctx, self): but that's making it freeze
+async def audioo(ctx):
+    "join voice channel of command issuer and start playing ominous music"
+    await ctx.send("note: you must be in a voice channel for this to work")
+    issuer = ctx.message.author
+    voice_channel = issuer.voice.channel
+    await ctx.send("attempting to join " + str(issuer) + "'s voice channel: " + str(voice_channel))
+    await ctx.send("channel id: " + str(voice_channel.id))
+    voice = discord.utils.get(ctx.guild.voice_channels, name=voice_channel.name)
+    await ctx.send("voice: " + str(voice))
+    # requires PyNaCl library (pip install pynacl)
+    vc = await voice.connect()
+    #voice_client = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
+    #await ctx.send("voice_client: " + str(voice_client))
+    #if voice_client == None:
+        #await ctx.send("no voice_client; using voice.connect()")
+        #await voice.connect()
+    #else:
+        #await ctx.send("voice_client exists; moving client to channel")
+        #await voice_client.move_to(voice_channel)
+
+    vc.play(discord.FFmpegPCMAudio(executable="/usr/bin/ffmpeg", source="/home/tobin/Music/bluejay-mscz.wav"))
+    # sleep while audio is playing then disconnect
+    while vc.is_playing():
+        sleep(.1)
+    await vc.disconnect()
+
+
 
 @bot.command(name="jason")
 async def jason(ctx, op, key=None, *, val=None):
@@ -83,12 +113,13 @@ async def jason(ctx, op, key=None, *, val=None):
 # I stole from the internet though, so don't really know how they work
 async def shutdown(ctx):
     "shuts down bot (provided command issuer is the same as dev acc for bot)"
-    await ctx.send("toad bot is departing")
+    issuer = ctx.message.author
     timestamp = str(datetime.datetime.now())
-    print(":: ToadBot signing off at " + timestamp)
+    await ctx.send(timestamp + ": toad bot is departing, by request of " + str(issuer))
+    print(":: ToadBot signing off at " + timestamp + " by request of " + str(issuer))
     # output the story so far to backup.txt with timestamp when you exit
     async with aiofiles.open("./backup.txt", "a+") as bkp:
-        await bkp.write("\n\n---- ToadBot signing off at " + timestamp + " ----\n")
+        await bkp.write("\n\n---- ToadBot signing off at " + timestamp + " by request of " + str(issuer) + " ----\n")
         print("writing latest backup of ./story-plaintext.txt to ./backup.txt...")
         await bkp.write(":: latest story-plaintext.txt:\n")
         async with aiofiles.open("./story-plaintext.txt", "r") as latest:
@@ -110,7 +141,15 @@ async def shutdown(ctx):
 async def on_command_error(ctx, error):
     # my approach to this is just have an if else chain to catch errors...
     if isinstance(error, discord.ext.commands.errors.NotOwner):
-        await ctx.send("You are not cool enough to do that.")
+        issuer = ctx.message.author
+        print(str(issuer) + " attempted to Stop the Bot unsuccessfully")
+        async with aiofiles.open("./backup.txt," "a+") as bkp:
+            await bkp.write(str(datetime.datetime.now()) + ": " + str(issuer) + " tried unsuccessfully to Stop the Bot.")
+            await bkp.close()
+        await ctx.send("You are not cool enough to Stop the Toad Boat, " + str(issuer) + ".")
+    else:
+        await ctx.send("ERROR: " + str(error))
+        print("ERROR: " + str(error))
 
 # this starts the loop that is the bot
 # the code essentialy gets stuck here as it just constantly loops over the @bot.whatever things waiting for triggers
