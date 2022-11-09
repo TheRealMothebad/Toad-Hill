@@ -101,6 +101,12 @@ async def jason(ctx, op, key=None, *, val=None):
             await jasper.close()
 
 
+@bot.command(name="whoami")
+async def whoami(ctx):
+    issuer = ctx.message.author
+    await ctx.send("You are " + str(issuer))
+
+
 @bot.command(name="stop", aliases=['shutdown', 'end', 'quit', 'exit'])
 @commands.is_owner()
 # I guess you can add tags like this to specify checks before running a command
