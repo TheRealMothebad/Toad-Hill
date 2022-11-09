@@ -18,7 +18,8 @@ import time
 from tok import DontStealMyToken
 
 #sets the bot (object?) to be referenced with variable "bot". Also sets the command prefix
-bot = commands.Bot(command_prefix="~")
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix="~", intents=intents)
 
 # You need to structure commands like this, but I don't remember why...
 # (that's just how the discord library reads stuff i guess?)
@@ -101,10 +102,52 @@ async def jason(ctx, op, key=None, *, val=None):
             await jasper.close()
 
 
-@bot.command(name="whoami")
-async def whoami(ctx):
+@bot.command(name="newplayer")
+async def newplayer(ctx, *, name=None):
+    "add a new character! use '~newplayer <character name>'"
     issuer = ctx.message.author
-    await ctx.send("You are " + str(issuer))
+    if name == None:
+        await ctx.send("You must specify a name (like '~newplayer Example Name')")
+    else:
+        await ctx.send("You are " + str(issuer))
+        await ctx.send("adding player '" + name + "'...")
+        print("Creating character '" + name + "' for " + str(issuer) + "...")
+        filename = name.replace(" ", "-").lower()
+        filepath = "./players/" + filename + ".json"
+        async with aiofiles.open(filepath, "w") as playerfile:
+            await playerfile.write("{}")
+            await playerfile.close()
+        async with aiofiles.open(filepath, "r") as playerfile:
+            readout = await playerfile.read()
+            parsed = json.loads(readout)
+            await playerfile.close()
+        parsed["name"] = str(name)
+        parsed["owner"] = str(issuer)
+        parsed["location"] = None
+        parsed["inventory"] = None
+        await ctx.send(str(json.dumps(parsed)))
+        async with aiofiles.open(filepath, "w") as playerfile:
+            await playerfile.write(json.dumps(parsed))
+            await playerfile.close()
+
+
+@bot.command(name="chooseplayer")
+async def chooseplayer(ctx, *, name=None):
+    "select your character (use '~chooseplayer <name>')"
+    issuer = ctx.message.author
+    if name == None:
+        await ctx.send("You must specify a name (like '~chooseplayerExample Name')")
+    else:
+        filename = name.replace(" ", "-").lower()
+        filepath = "./players/" + filename + ".json"
+        async with aiofiles.open(filepath, "r") as playerfile:
+            readout = await playerfile.read()
+            parsed = json.loads(readout)
+            await playerfile.close()
+        if str(issuer) == str(parsed["owner"]):
+            await ctx.send("This will work! " + str(issuer) + " owns " + str(parsed['name']) + ".")
+        else:
+            await ctx.send("Error: you do not own " + str(parsed['name']) + ". Please select a character you created, or create a new character.")
 
 
 @bot.command(name="stop", aliases=['shutdown', 'end', 'quit', 'exit'])
@@ -159,3 +202,4 @@ bot.run(DontStealMyToken)
 
 # if you want code to run after the bot is shut down, put it here
 # (this will run after a ^C on the local side too; it's after the loop is broken, in any case)
+print("ToadBot going offline...")
