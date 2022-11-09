@@ -154,6 +154,7 @@ async def on_command_error(ctx, error):
 # this starts the loop that is the bot
 # the code essentialy gets stuck here as it just constantly loops over the @bot.whatever things waiting for triggers
 # I think the loop starts at bot = commands.Bot() but am not sure
+print("ToadBot going online...")
 bot.run(DontStealMyToken)
 
 # if you want code to run after the bot is shut down, put it here
