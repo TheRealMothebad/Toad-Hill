@@ -21,7 +21,7 @@ function menu {
 		echo "selected start"
 	elif [ "$mininpt" == "C" ] || [ "$meninpt" == "c" ]
 	then
-		echo "elected continue"
+		echo "selected continue"
 	elif [ "$mininpt" == "Q" ] || [ "$meninpt" == "q" ]
 	then
 		exit
