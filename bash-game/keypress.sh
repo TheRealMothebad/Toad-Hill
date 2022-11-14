@@ -55,16 +55,16 @@ function nav {
 	do
 		plant
 		read -s -n 1 key
-		if [ $key == "w" ]
+		if [ $key == "w" ] || [ $key == "k" ]
 		then
 			posy=$(( $posy - 1 ))
-		elif [ $key == "a" ]
+		elif [ $key == "a" ] || [ $key == "h" ]
 		then
 			posx=$(( $posx - 1 ))
-		elif [ $key == "s" ]
+		elif [ $key == "s" ] || [ $key == "j" ]
 		then
 			posy=$(( $posy + 1 ))
-		elif [ $key == "d" ]
+		elif [ $key == "d" ] || [ $key == "l" ]
 		then
 			posx=$(( $posx + 1 ))
 		elif [ $key == "q" ]
