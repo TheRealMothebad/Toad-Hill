@@ -16,7 +16,7 @@ mapy="0"
 fullobjects=("009 016 a" "011 019 b" "011 024 c" "010 018 #" "120 170 p" "017 57 q")
 
 
-function win {
+function centerprint {
 	clear
 	n=0 ; while [ "$n" -lt $centy ]
 	do
@@ -24,14 +24,18 @@ function win {
 		echo ""
 	done
 	xpad=""
-	n=0 ; while [ "$n" -lt $centx ]
+	n=0 ; while [ "$n" -lt $(( $centx - ${#1} / 2 )) ]
 	do
 		n=$(( n + 1 ))
 		xpad+=" "
 	done
-	echo -n "$xpad"
-	echo "you won!"
-	exit
+	echo "$xpad$1"
+	echo "" && echo ""
+}
+
+
+function win {
+	centerprint "you won!" && exit
 }
 
 
@@ -104,14 +108,14 @@ function draw {
 			xacc="$objx"
 		else
 			# this line is throwing an error donno why, it seems like $yacc is coming up as "" instead of "0"?
-			yunacc=$(( "$objy" - "$yacc" ))
+			yunacc=$(( $objy - $yacc ))
 			m=0 ; while [ "$m" -lt "$yunacc" ]
 			do
 				m=$(( $m + 1 ))
 				echo ""
 			done
 			xspace=""
-			m=0 ; while [ "$m" -lt "$objx" ]
+			m=0 ; while [ $m -lt $objx ]
 			do
 				m=$(( $m + 1 ))
 				xspace+=" "
@@ -154,7 +158,7 @@ function nav {
 		posx=$(( $posx + 1 ))
 	elif [ $key == "q" ]
 	then
-		clear && echo "quitting" && exit
+		centerprint "goodbye" && exit
 	fi
 	clear
 }
@@ -169,7 +173,6 @@ function parseobjects {
 	thismapobjects=("")
 	n=0 ; while [ "$n" -lt ${#fullobjects[@]} ]
 	do
-		n=$(( $n + 1 ))
 		m=0
 		for i in ${fullobjects[$n]}
 		do
@@ -207,8 +210,6 @@ function parseobjects {
 				fi
 			done
 			echo ". recentered obj $obj @ [$objx, $objy]"
-			objx=$(( $objx + $minx ))
-			objy=$(( $objy + $miny ))
 			objxzer=""
 			m=0 ; while [ "$m" -lt $(( 3 - ${#objx} )) ]
 			do
@@ -225,6 +226,7 @@ function parseobjects {
 			objypad="$objyzer$objy"
 			thismapobjects+=("$objypad $objxpad $obj")
 		fi
+		n=$(( $n + 1 ))
 	done
 	echo "objects in this map:"
 	echo "${thismapobjects[*]}"
