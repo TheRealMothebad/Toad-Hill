@@ -1,18 +1,38 @@
 #!/bin/bash
 
-initobjects=("009 016 a" "011 019 b" "011 024 c")
-
 domain=$( tput cols )
 range=$( tput lines )
 
 centx=$(( $domain / 2 ))
 centy=$(( $range / 2 ))
 
-posx="17"
-posy="10"
+posx="$centx"
+posy="$centy"
 
 mapx="0"
 mapy="0"
+
+
+initobjects=("009 016 a" "011 019 b" "011 024 c" "010 018 #")
+
+
+function win {
+	clear
+	n=0 ; while [ "$n" -lt $centy ]
+	do
+		n=$(( n + 1 ))
+		echo ""
+	done
+	xpad=""
+	n=0 ; while [ "$n" -lt $centx ]
+	do
+		n=$(( n + 1 ))
+		xpad+=" "
+	done
+	echo -n "$xpad"
+	echo "you won!"
+	exit
+}
 
 
 function draw {
@@ -31,13 +51,14 @@ function draw {
 	plrx="$plrzerx$posx"
 	plry="$plrzery$posy"
 	objects=("${initobjects[@]}")
-	objects+=("$plry $plrx P")
+	objects+=("$plry $plrx @")
 	IFS=$'\n' objects=($(sort <<<"${objects[*]}"))
 	unset IFS
 
 
 	yacc="0"
 	xacc="0"
+	prevobj=""
 	n=0 ; while [ "$n" -lt ${#objects[@]} ]
 	do
 		m=0
@@ -66,10 +87,17 @@ function draw {
 		else
 			if [ $objy == $yacc ] && [ $objx == $xacc ]
 			then
-				echo -n "!"
+				echo -ne "\b!"
+				if [ $obj == "@" ] && [ $prevobj == "#" ]
+				then
+					win
+				elif [ $obj == "#" ] && [ $prevobj == "@" ]
+				then
+					win
+				fi
 			elif [ $objy == $yacc ] && ! [ $objx == $xacc ]
 			then
-				xunacc=$(( $objx - $xacc ))
+				xunacc=$(( $objx - $xacc - 1 ))
 				xspace=""
 				m=0 ; while [ "$m" -lt $xunacc ]
 				do
@@ -96,7 +124,80 @@ function draw {
 				xacc="$objx"
 			fi
 		fi
+		prevobj="$obj"
+	done
+	remy=$(( $range - $yacc - 1 ))
+	n=0 ; while [ "$n" -lt $remy ]
+	do
+		n=$(( $n + 1 ))
+		echo ""
+	done
+	n=0 ; while [ "$n" -lt $domain ]
+	do
+		n=$(( $n + 1 ))
+		echo -n " "
 	done
 }
 
-draw
+
+function nav {
+	read -s -n 1 key
+	if [ $key == "w" ] || [ $key == "k" ]
+	then
+		posy=$(( $posy - 1 ))
+	elif [ $key == "a" ] || [ $key == "h" ]
+	then
+		posx=$(( $posx - 1 ))
+	elif [ $key == "s" ] || [ $key == "j" ]
+	then
+		posy=$(( $posy + 1 ))
+	elif [ $key == "d" ] || [ $key == "l" ]
+	then
+		posx=$(( $posx + 1 ))
+	elif [ $key == "q" ]
+	then
+		clear && echo "quitting" && exit
+	fi
+	clear
+}
+
+
+function navloop {
+	#while [ $posx -lt $domain ] && [ $posy -lt $range ]
+	# this is because of the "planting [x, y]" printout, it won't be there in the game unless there are stats or something
+	clear
+	while [ $posx -lt $domain ] && [ $posx -ge 0 ] && [ $posy -lt $(( $range - 1 )) ] && [ $posy -ge 0 ]
+	do
+		draw
+		nav
+	done
+	if [ $posx -ge $domain ] ; then
+		# posx exceeds domain
+		mapx=$(( $mapx + 1 ))
+		posx="0"
+		navloop
+	elif [ $posx -lt 0 ] ; then
+		# posx less than 0
+		mapx=$(( $mapx - 1 ))
+		posx=$(( $domain - 1 ))
+		navloop
+	elif [ $posy -ge $(( $range - 1 )) ] ; then
+		# posy exceeds range
+		mapy=$(( $mapy + 1 ))
+		posy="0"
+		navloop
+	elif [ $posy -lt 0 ] ; then
+		# posy less than 0
+		mapy=$(( $mapy - 1 ))
+		posy=$(( $range - 2 ))
+		navloop
+	fi
+}
+
+
+function main {
+	navloop
+}
+
+
+main
