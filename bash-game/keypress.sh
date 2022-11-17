@@ -28,8 +28,9 @@ function plant {
 		n=$(( $n + 1 ))
 		xgap+=" "
 	done
-	echo -n "$xgap"
-	echo -n "#" && echo -ne "\r$xgap"
+	#echo -n "$xgap"
+	#echo -n "🐀"
+	echo -n "$xgap🐀" && echo -ne "\r$xgap"
 	#remy=$(( $range - $posy - 1 ))
 	# this is because of the "planting [x, y]" printout, it won't be there in the game unless there are stats or something
 	#remy=$(( $range - $posy - 2 ))
@@ -75,22 +76,22 @@ function navloop {
 		nav
 	done
 	if [ $posx -ge $domain ] ; then
-		echo "posx exceeds domain"
+		#echo "posx exceeds domain"
 		mapx=$(( $mapx + 1 ))
 		posx="0"
 		navloop
 	elif [ $posx -lt 0 ] ; then
-		echo "posx less than 0"
+		#echo "posx less than 0"
 		mapx=$(( $mapx - 1 ))
 		posx=$(( $domain - 1 ))
 		navloop
 	elif [ $posy -ge $(( $range - 1 )) ] ; then
-		echo "posy exceeds range"
+		#echo "posy exceeds range"
 		mapy=$(( $mapy + 1 ))
 		posy="0"
 		navloop
 	elif [ $posy -lt 0 ] ; then
-		echo "posy less than 0"
+		#echo "posy less than 0"
 		mapy=$(( $mapy - 1 ))
 		posy=$(( $range - 2 ))
 		navloop
