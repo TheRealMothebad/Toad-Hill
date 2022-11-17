@@ -2,6 +2,8 @@
 
 domain=$( tput cols )
 range=$( tput lines )
+# this is so i have room at the top for debug:
+range=$(( $range - 1 ))
 
 centx=$(( $domain / 2 ))
 centy=$(( $range / 2 ))
@@ -13,7 +15,7 @@ mapx="0"
 mapy="0"
 
 
-fullobjects=("009 016 a" "011 019 b" "011 024 c" "010 018 #" "120 170 p" "017 57 q")
+fullobjects=("009 016 a" "011 019 b" "011 024 c" "010 018 #" "120 170 p" "017 57 q" "020 085 g" "020 086 o" "020 088 t" "020 089 h" "020 090 i" "020 091 s" "021 089 w" "021 090 a" "021 091 y" "021 092 ." "021 093 ." "021 094 .")
 
 
 function centerprint {
@@ -40,6 +42,7 @@ function win {
 
 
 function draw {
+	echo "map [$mapx, $mapy] (showing [$minx, $miny] thru. [$maxx, $maxy]); pos @ [$posx, $posy]"
 	plrzerx=""
 	n=0 ; while [ "$n" -lt $(( 3 - ${#posx} )) ]
 	do
@@ -104,23 +107,25 @@ function draw {
 				m=$(( $m + 1 ))
 				xspace+=" "
 			done
-			echo -n "$xspace$obj"
+			echo -n "$xspace"
+			echo -n "$obj"
 			xacc="$objx"
 		else
-			# this line is throwing an error donno why, it seems like $yacc is coming up as "" instead of "0"?
 			yunacc=$(( $objy - $yacc ))
-			m=0 ; while [ "$m" -lt "$yunacc" ]
+			m=0 ; while [ "$m" -lt $yunacc ]
 			do
 				m=$(( $m + 1 ))
 				echo ""
 			done
 			xspace=""
-			m=0 ; while [ $m -lt $objx ]
+			# this line throws an error, unary operator expected
+			m=0 ; while [ "$m" -lt $objx ]
 			do
 				m=$(( $m + 1 ))
 				xspace+=" "
 			done
-			echo -n "$xspace$obj"
+			echo -n "$xspace"
+			echo -n "$obj"
 			yacc="$objy"
 			xacc="$objx"
 		fi
@@ -230,7 +235,6 @@ function parseobjects {
 	done
 	echo "objects in this map:"
 	echo "${thismapobjects[*]}"
-	sleep 1
 }
 
 
