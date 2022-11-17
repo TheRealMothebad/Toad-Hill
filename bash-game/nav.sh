@@ -13,7 +13,7 @@ mapx="0"
 mapy="0"
 
 
-initobjects=("009 016 a" "011 019 b" "011 024 c" "010 018 #")
+fullobjects=("009 016 a" "011 019 b" "011 024 c" "010 018 #" "120 170 p" "017 57 q")
 
 
 function win {
@@ -50,7 +50,7 @@ function draw {
 	done
 	plrx="$plrzerx$posx"
 	plry="$plrzery$posy"
-	objects=("${initobjects[@]}")
+	objects=("${thismapobjects[@]}")
 	objects+=("$plry $plrx @")
 	IFS=$'\n' objects=($(sort <<<"${objects[*]}"))
 	unset IFS
@@ -66,11 +66,11 @@ function draw {
 		do
 			m=$(( $m + 1 ))
 			if [ $m == "1" ] ; then
-				objy=$i
+				objy="$i"
 			elif [ $m == "2" ] ; then
-				objx=$i
+				objx="$i"
 			elif [ $m == "3" ] ; then
-				obj=$i
+				obj="$i"
 			fi
 		done
 
@@ -81,48 +81,44 @@ function draw {
 
 		n=$(( $n + 1 ))
 
-		if [ $objx -ge $domain ] || [ $objx -lt 0 ] || [ $objy -ge $(( $range - 1 )) ] || [ $objy -lt 0 ]
+		if [ "$objy" == "$yacc" ] && [ "$objx" == "$xacc" ]
 		then
-			echo "$obj exceeded bounds"
-		else
-			if [ $objy == $yacc ] && [ $objx == $xacc ]
+			echo -ne "\b!"
+			if [ $obj == "@" ] && [ $prevobj == "#" ]
 			then
-				echo -ne "\b!"
-				if [ $obj == "@" ] && [ $prevobj == "#" ]
-				then
-					win
-				elif [ $obj == "#" ] && [ $prevobj == "@" ]
-				then
-					win
-				fi
-			elif [ $objy == $yacc ] && ! [ $objx == $xacc ]
+				win
+			elif [ $obj == "#" ] && [ $prevobj == "@" ]
 			then
-				xunacc=$(( $objx - $xacc - 1 ))
-				xspace=""
-				m=0 ; while [ "$m" -lt $xunacc ]
-				do
-					m=$(( $m + 1 ))
-					xspace+=" "
-				done
-				echo -n "$xspace$obj"
-				xacc="$objx"
-			else
-				yunacc=$(( $objy - $yacc ))
-				m=0 ; while [ "$m" -lt $yunacc ]
-				do
-					m=$(( $m + 1 ))
-					echo ""
-				done
-				xspace=""
-				m=0 ; while [ "$m" -lt $objx ]
-				do
-					m=$(( $m + 1 ))
-					xspace+=" "
-				done
-				echo -n "$xspace$obj"
-				yacc="$objy"
-				xacc="$objx"
+				win
 			fi
+		elif [ "$objy" == "$yacc" ] && ! [ "$objx" == "$xacc" ]
+		then
+			xunacc=$(( $objx - $xacc - 1 ))
+			xspace=""
+			m=0 ; while [ "$m" -lt $xunacc ]
+			do
+				m=$(( $m + 1 ))
+				xspace+=" "
+			done
+			echo -n "$xspace$obj"
+			xacc="$objx"
+		else
+			# this line is throwing an error donno why, it seems like $yacc is coming up as "" instead of "0"?
+			yunacc=$(( "$objy" - "$yacc" ))
+			m=0 ; while [ "$m" -lt "$yunacc" ]
+			do
+				m=$(( $m + 1 ))
+				echo ""
+			done
+			xspace=""
+			m=0 ; while [ "$m" -lt "$objx" ]
+			do
+				m=$(( $m + 1 ))
+				xspace+=" "
+			done
+			echo -n "$xspace$obj"
+			yacc="$objy"
+			xacc="$objx"
 		fi
 		prevobj="$obj"
 	done
@@ -132,11 +128,13 @@ function draw {
 		n=$(( $n + 1 ))
 		echo ""
 	done
-	n=0 ; while [ "$n" -lt $domain ]
-	do
-		n=$(( $n + 1 ))
-		echo -n " "
-	done
+	#spacewidth=""	
+	#n=0 ; while [ "$n" -lt $domain ]
+	#do
+	#	n=$(( $n + 1 ))
+	#	spacewidth+=" "
+	#done
+	#echo -n "$spacewidth"
 }
 
 
@@ -162,11 +160,82 @@ function nav {
 }
 
 
+function parseobjects {
+	minx=$(( $mapx * $domain ))
+	maxx=$(( $minx + $domain ))
+	miny=$(( $mapy * $range ))
+	maxy=$(( $miny + $range ))
+	#echo "map [$mapx, $mapy], meaning domain [$minx, $maxx] and range [$miny, $maxy]"
+	thismapobjects=("")
+	n=0 ; while [ "$n" -lt ${#fullobjects[@]} ]
+	do
+		n=$(( $n + 1 ))
+		m=0
+		for i in ${fullobjects[$n]}
+		do
+			m=$(( $m + 1 ))
+			if [ $m == "1" ] ; then
+				objy=$i
+			elif [ $m == "2" ] ; then
+				objx=$i
+			elif [ $m == "3" ] ; then
+				obj=$i
+			fi
+		done
+		objy=$( echo "$objy" | sed 's/^0*//' )
+		objx=$( echo "$objx" | sed 's/^0*//' )
+		echo "examining obj $obj @ [$objx, $objy]"
+		if [ $objx -lt $maxx ] && [ $objx -ge $minx ] && [ $objy -lt $maxy ] && [ $objy -ge $miny ]
+		then
+			echo ". passed obj $obj"
+			m=0 ; while [ "$m" -lt 1 ]
+			do
+				if [ "$objx" -ge "$domain" ]
+				then
+					objx=$(( $objx - $domain ))
+				elif [ "$objx" -lt 0 ]
+				then
+					objx=$(( $objx + $domain ))
+				elif [ "$objy" -ge "$range" ]
+				then
+					objy=$(( $objy - $range ))
+				elif [ "$objy" -lt 0 ]
+				then
+					objy=$(( $objy + $range ))
+				else
+					m=1
+				fi
+			done
+			echo ". recentered obj $obj @ [$objx, $objy]"
+			objx=$(( $objx + $minx ))
+			objy=$(( $objy + $miny ))
+			objxzer=""
+			m=0 ; while [ "$m" -lt $(( 3 - ${#objx} )) ]
+			do
+				m=$(( $m + 1 ))
+				objxzer+="0"
+			done
+			objyzer=""
+			m=0 ; while [ "$m" -lt $(( 3 - ${#objy} )) ]
+			do
+				m=$(( $m + 1 ))
+				objyzer+="0"
+			done
+			objxpad="$objxzer$objx"
+			objypad="$objyzer$objy"
+			thismapobjects+=("$objypad $objxpad $obj")
+		fi
+	done
+	echo "objects in this map:"
+	echo "${thismapobjects[*]}"
+	sleep 1
+}
+
+
 function navloop {
-	#while [ $posx -lt $domain ] && [ $posy -lt $range ]
-	# this is because of the "planting [x, y]" printout, it won't be there in the game unless there are stats or something
+	parseobjects
 	clear
-	while [ $posx -lt $domain ] && [ $posx -ge 0 ] && [ $posy -lt $(( $range - 1 )) ] && [ $posy -ge 0 ]
+	while [ $posx -lt $domain ] && [ $posx -ge 0 ] && [ $posy -lt $range ] && [ $posy -ge 0 ]
 	do
 		draw
 		nav
@@ -181,7 +250,7 @@ function navloop {
 		mapx=$(( $mapx - 1 ))
 		posx=$(( $domain - 1 ))
 		navloop
-	elif [ $posy -ge $(( $range - 1 )) ] ; then
+	elif [ $posy -ge $range ] ; then
 		# posy exceeds range
 		mapy=$(( $mapy + 1 ))
 		posy="0"
@@ -189,7 +258,7 @@ function navloop {
 	elif [ $posy -lt 0 ] ; then
 		# posy less than 0
 		mapy=$(( $mapy - 1 ))
-		posy=$(( $range - 2 ))
+		posy=$(( $range - 1 ))
 		navloop
 	fi
 }
