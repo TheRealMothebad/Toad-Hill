@@ -111,6 +111,7 @@ function draw {
 			echo -n "$obj"
 			xacc="$objx"
 		else
+			# got a syntax error here at one point donno: `operand expected (error token is "-  ")`
 			yunacc=$(( $objy - $yacc ))
 			m=0 ; while [ "$m" -lt $yunacc ]
 			do
