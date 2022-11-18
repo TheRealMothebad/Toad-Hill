@@ -118,12 +118,18 @@ function draw {
 		if [ "$objy" == "$yacc" ] && [ "$objx" == "$xacc" ]
 		then
 			echo -ne "\b!"
-			if [ $obj == "@" ] && [ $prevobj == "#" ]
-			then
+			if [ $obj == "@" ] && [ $prevobj == "#" ]; then
 				win
-			elif [ $obj == "#" ] && [ $prevobj == "@" ]
-			then
+			elif [ $obj == "#" ] && [ $prevobj == "@" ]; then
 				win
+			elif [ $obj == "@" ] && [ $prevobj == "q" ]; then
+				quit
+			elif [ $obj == "q" ] && [ $prevobj == "@" ]; then
+				quit
+			elif [ $obj == "@" ] && [ $prevobj == "s" ]; then
+				echo -n "you found a secret!"
+			elif [ $obj == "s" ] && [ $prevobj == "@" ]; then
+				echo -n "you found a secret!"
 			fi
 		elif [ "$objy" == "$yacc" ] && ! [ "$objx" == "$xacc" ]
 		then
@@ -220,10 +226,10 @@ function parseobjects {
 		done
 		objy=$( echo "$objy" | sed 's/^0*//' )
 		objx=$( echo "$objx" | sed 's/^0*//' )
-		echo "examining obj $obj @ [$objx, $objy]"
+		#echo "examining obj $obj @ [$objx, $objy]"
 		if [ $objx -lt $maxx ] && [ $objx -ge $minx ] && [ $objy -lt $maxy ] && [ $objy -ge $miny ]
 		then
-			echo ". passed obj $obj"
+			#echo ". passed obj $obj"
 			m=0 ; while [ "$m" -lt 1 ]
 			do
 				if [ "$objx" -ge "$domain" ]
@@ -242,7 +248,7 @@ function parseobjects {
 					m=1
 				fi
 			done
-			echo ". recentered obj $obj @ [$objx, $objy]"
+			#echo ". recentered obj $obj @ [$objx, $objy]"
 			objxzer=""
 			m=0 ; while [ "$m" -lt $(( 3 - ${#objx} )) ]
 			do
@@ -261,8 +267,8 @@ function parseobjects {
 		fi
 		n=$(( $n + 1 ))
 	done
-	echo "objects in this map:"
-	echo "${thismapobjects[*]}"
+	#echo "objects in this map:"
+	#echo "${thismapobjects[*]}"
 }
 
 
