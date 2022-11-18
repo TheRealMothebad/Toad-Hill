@@ -50,6 +50,7 @@ function centerprint {
 
 
 function quit {
+	clear
 	n=0 ; while [ "$n" -lt $centy ]
 	do
 		n=$(( n + 1 ))
@@ -302,22 +303,64 @@ function navloop {
 
 
 function menu {
-	#navloop
-	n=0 ; while [ "$n" -lt $centy ]
-	do
-		n=$(( n + 1 ))
-		echo ""
-	done
-	centerprint "$1" && echo ""
 	y=0
+	menuopts=("")
+	menufuncs=("")
+	menuno=0
 	for i in "${@:2}"
 	do
-		y=$(( $y + 1 ))
 		if [[ $(( $y % 2 )) -eq 0 ]]
 		then
-			echo "$i is the function"
+			menuopts[$menuno]="$i"
+			echo "menuopts $menuno is now $i"
 		else
-			centerprint "$i"
+			menufuncs[$menuno]="$i"
+			echo "menufuncs $menuno is now $i"
+			menuno=$(( $menuno + 1 ))
+		fi
+		y=$(( $y + 1 ))
+	done
+
+
+
+	optscount=$(( ( ${#@} - 1 ) / 2 - 1 ))
+	selected=0
+	s=0 ; while [ "$s" -lt 1 ]
+	do
+		menuoptsmod=("${menuopts[@]}")
+		menuoptsmod[$selected]="> ${menuoptsmod[$selected]} <"
+		clear
+		n=0 ; while [ "$n" -lt $centy ]
+		do
+			n=$(( n + 1 ))
+			echo ""
+		done
+		centerprint "$1" && echo ""
+		o=0 ; while [ "$o" -le $optscount ]
+		do
+			centerprint "${menuoptsmod[$o]}"
+			o=$(( $o + 1 ))
+		done
+
+		read -s -n 1 key
+		if [ $key == "w" ] || [ $key == "k" ]
+		then
+			if [ "$selected" -gt 0 ]
+			then
+				selected=$(( $selected - 1 ))
+			fi
+		elif [ $key == "s" ] || [ $key == "j" ]
+		then
+			if [ "$selected" -lt $optscount ]
+			then
+				selected=$(( $selected + 1 ))
+			fi
+		elif [ $key == "d" ] || [ $key == "l" ]
+		then
+			s=1
+			echo "selected $selected"
+			echo "which is (${menuoptsmod[$selected]})[${menufuncs[$selected]}]."
+			eval ${menufuncs[$selected]}
 		fi
 	done
 }
