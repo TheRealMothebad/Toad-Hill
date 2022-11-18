@@ -18,6 +18,16 @@ mapy="0"
 fullobjects=("009 016 a" "011 019 b" "011 024 c" "010 018 #" "120 170 p" "017 57 q" "020 085 g" "020 086 o" "020 088 t" "020 089 h" "020 090 i" "020 091 s" "021 089 w" "021 090 a" "021 091 y" "021 092 ." "021 093 ." "021 094 .")
 
 
+function centerprint_toppad {
+	clear
+	n=0 ; while [ "$n" -lt $(( $centy - 6 )) ]
+	do
+		n=$(( n + 1 ))
+		echo ""
+	done
+}
+
+
 function centerprint_line {
 	xpad=""
 	n=0 ; while [ "$n" -lt $(( $centx - ${#1} / 2 )) ]
@@ -45,7 +55,6 @@ function centerprint {
 		fi
 	done
 	centerprint_line "$row"
-
 }
 
 
@@ -57,6 +66,7 @@ function quit {
 		echo ""
 	done
 	centerprint "goodbye"
+	echo "" && echo ""
 	exit
 }
 
@@ -329,12 +339,7 @@ function menu {
 	do
 		menuoptsmod=("${menuopts[@]}")
 		menuoptsmod[$selected]="> ${menuoptsmod[$selected]} <"
-		clear
-		n=0 ; while [ "$n" -lt $centy ]
-		do
-			n=$(( n + 1 ))
-			echo ""
-		done
+		centerprint_toppad
 		centerprint "$1" && echo ""
 		o=0 ; while [ "$o" -le $optscount ]
 		do
@@ -358,8 +363,6 @@ function menu {
 		elif [ $key == "d" ] || [ $key == "l" ]
 		then
 			s=1
-			echo "selected $selected"
-			echo "which is (${menuoptsmod[$selected]})[${menufuncs[$selected]}]."
 			eval ${menufuncs[$selected]}
 		fi
 	done
@@ -367,7 +370,7 @@ function menu {
 
 
 function main {
-	menu "Welcome to Toad Hill! This game does not really exist yet, but here is something like a bash game engine." "Walk around" "navloop" "Quit" "quit"
+	menu "Welcome to Toad Hill! This game does not really exist yet, but here is something like a bash-based game engine. Use WASD (or vim binds) to navigate the menu and the game (right is select)." "Walk around" "centerprint_toppad && centerprint 'you are the @ symbol.' && centerprint 'use q to quit.' && sleep 2 && navloop" "Quit" "quit"
 }
 
 
