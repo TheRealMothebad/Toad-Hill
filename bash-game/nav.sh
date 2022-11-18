@@ -18,13 +18,7 @@ mapy="0"
 fullobjects=("009 016 a" "011 019 b" "011 024 c" "010 018 #" "120 170 p" "017 57 q" "020 085 g" "020 086 o" "020 088 t" "020 089 h" "020 090 i" "020 091 s" "021 089 w" "021 090 a" "021 091 y" "021 092 ." "021 093 ." "021 094 .")
 
 
-function centerprint {
-	clear
-	n=0 ; while [ "$n" -lt $centy ]
-	do
-		n=$(( n + 1 ))
-		echo ""
-	done
+function centerprint_line {
 	xpad=""
 	n=0 ; while [ "$n" -lt $(( $centx - ${#1} / 2 )) ]
 	do
@@ -32,12 +26,48 @@ function centerprint {
 		xpad+=" "
 	done
 	echo "$xpad$1"
-	echo "" && echo ""
+}
+
+
+function centerprint {
+	maxw=$(( $domain / 2 ))
+	line=($1)
+	row=""
+	for l in "${line[@]}"
+	do
+		testrow="$row $l"
+		if [ "${#testrow}" -le $maxw ]
+		then
+			row="$testrow"
+		else
+			centerprint_line "$row"
+			row="$l"
+		fi
+	done
+	centerprint_line "$row"
+
+}
+
+
+function quit {
+	n=0 ; while [ "$n" -lt $centy ]
+	do
+		n=$(( n + 1 ))
+		echo ""
+	done
+	centerprint "goodbye"
+	exit
 }
 
 
 function win {
-	centerprint "you won!" && exit
+	n=0 ; while [ "$n" -lt $centy ]
+	do
+		n=$(( n + 1 ))
+		echo ""
+	done
+	centerprint "you won!"
+	exit
 }
 
 
@@ -164,7 +194,7 @@ function nav {
 		posx=$(( $posx + 1 ))
 	elif [ $key == "q" ]
 	then
-		centerprint "goodbye" && exit
+		quit
 	fi
 	clear
 }
@@ -271,8 +301,30 @@ function navloop {
 }
 
 
+function menu {
+	#navloop
+	n=0 ; while [ "$n" -lt $centy ]
+	do
+		n=$(( n + 1 ))
+		echo ""
+	done
+	centerprint "$1" && echo ""
+	y=0
+	for i in "${@:2}"
+	do
+		y=$(( $y + 1 ))
+		if [[ $(( $y % 2 )) -eq 0 ]]
+		then
+			echo "$i is the function"
+		else
+			centerprint "$i"
+		fi
+	done
+}
+
+
 function main {
-	navloop
+	menu "Welcome to Toad Hill! This game does not really exist yet, but here is something like a bash game engine." "Walk around" "navloop" "Quit" "quit"
 }
 
 
