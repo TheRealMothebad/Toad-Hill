@@ -8,14 +8,8 @@ range=$(( $range - 1 ))
 centx=$(( $domain / 2 ))
 centy=$(( $range / 2 ))
 
-posx="$centx"
-posy="$centy"
-
 mapx="0"
 mapy="0"
-
-
-fullobjects=("009 016 a" "011 019 b" "011 024 c" "010 018 #" "120 170 p" "017 57 q" "020 085 g" "020 086 o" "020 088 t" "020 089 h" "020 090 i" "020 091 s" "021 089 w" "021 090 a" "021 091 y" "021 092 ." "021 093 ." "021 094 .")
 
 
 function centerprint_toppad {
@@ -59,12 +53,7 @@ function centerprint {
 
 
 function quit {
-	clear
-	n=0 ; while [ "$n" -lt $centy ]
-	do
-		n=$(( n + 1 ))
-		echo ""
-	done
+	centerprint_toppad
 	centerprint "goodbye"
 	echo "" && echo ""
 	exit
@@ -72,12 +61,9 @@ function quit {
 
 
 function win {
-	n=0 ; while [ "$n" -lt $centy ]
-	do
-		n=$(( n + 1 ))
-		echo ""
-	done
+	centerprint_toppad
 	centerprint "you won!"
+	echo "" && echo ""
 	exit
 }
 
@@ -370,6 +356,7 @@ function menu {
 
 
 function main {
+	eval $( cat maps/test.map )
 	menu "Welcome to Toad Hill! This game does not really exist yet, but here is something like a bash-based game engine. Use WASD (or vim binds) to navigate the menu and the game (right is select)." "Walk around" "centerprint_toppad && centerprint 'you are the @ symbol.' && centerprint 'use q to quit.' && sleep 2 && navloop" "Quit" "quit"
 }
 
