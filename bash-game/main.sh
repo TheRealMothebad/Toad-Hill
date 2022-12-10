@@ -67,6 +67,18 @@ function win {
 	exit
 }
 
+function usrcmd {
+	echo -n ":"
+	read usrstring
+	if [ $usrstring == "q" ]
+	then
+		quit
+	else
+		centerprint "You entered '$usrstring'. This function doesn't work yet. Please enjoy the rest of your toad adventure."
+		sleep 3
+	fi
+}
+
 
 function draw {
 	echo "map [$mapx, $mapy] (showing [$minx, $miny] thru. [$maxx, $maxy]); pos @ [$posx, $posy]"
@@ -195,6 +207,9 @@ function nav {
 	elif [ $key == "d" ] || [ $key == "l" ]
 	then
 		posx=$(( $posx + 1 ))
+	elif [ $key == ":" ]
+	then
+		usrcmd
 	elif [ $key == "q" ]
 	then
 		quit
