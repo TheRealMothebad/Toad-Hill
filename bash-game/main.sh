@@ -207,6 +207,24 @@ function nav {
 	elif [ $key == "d" ] || [ $key == "l" ]
 	then
 		posx=$(( $posx + 1 ))
+	elif [ $key == $(printf "\u1b") ]
+	then
+		read -s -n 1 key2
+		if [ $key2 == "[" ]
+		then
+			read -s -n 1 key3
+			if [ $key3 == "A" ] ; then
+				posy=$(( $posy - 1 ))
+			elif [ $key3 == "B" ] ; then
+				posy=$(( $posy + 1 ))
+			elif [ $key3 == "C" ] ; then
+				posx=$(( $posx + 1 ))
+			elif [ $key3 == "D" ] ; then
+				posx=$(( $posx - 1 ))
+			fi
+		else
+			echo "unsupported escape character combination"
+		fi
 	elif [ $key == ":" ]
 	then
 		usrcmd
@@ -367,10 +385,31 @@ function menu {
 			then
 				selected=$(( $selected + 1 ))
 			fi
-		elif [ $key == "d" ] || [ $key == "l" ]
+		elif [ $key == "d" ] || [ $key == "l" ] || [ $key == $(printf "\n") ]
 		then
 			s=1
 			eval ${menufuncs[$selected]}
+		elif [ $key == $(printf "\u1b") ]
+		then
+			read -s -n 1 key2
+			if [ $key2 == "[" ]
+			then
+				read -s -n 1 key3
+				if [ $key3 == "A" ] ; then
+					if [ "$selected" -gt 0 ]
+					then
+						selected=$(( $selected - 1 ))
+					fi
+				elif [ $key3 == "B" ] ; then
+					if [ "$selected" -lt $optscount ]
+					then
+						selected=$(( $selected + 1 ))
+					fi
+				elif [ $key3 == "C" ] ; then
+					s=1
+					eval ${menufuncs[$selected]}
+				fi
+			fi
 		fi
 	done
 }
