@@ -55,14 +55,16 @@ function draw {
 			elif [ $obj == "s" ] && [ $prevobj == "@" ]; then
 				echo -n "you found a secret!"
 			fi
-#			for i in "${doors[@]}"; do
-#				b=($i)
-#				if [ $obj == "@" ] && [ $prevobj == "${b[0]}" ]; then
-#					echo -n "door ${b[1]}..."
-#				elif [ $obj == "${b[0]}" ] && [ $prevobj == "@" ]; then
-#					echo -n "door ${b[1]}..."
-#				fi
-#			done
+			for i in "${doors[@]}"; do
+				b=($i)
+				if [ $obj == "@" ] && [ $prevobj == "${b[0]}" ]; then
+					eval $( cat ${b[1]} )
+					main
+				elif [ $obj == "${b[0]}" ] && [ $prevobj == "@" ]; then
+					eval $( cat ${b[1]} )
+					main
+				fi
+			done
 		elif [ "$objy" == "$yacc" ] && ! [ "$objx" == "$xacc" ]; then
 			# same row, different position
 			xunacc=$(( $objx - $xacc - 1 ))
@@ -92,8 +94,8 @@ function draw {
 		fi
 		prevobj="$obj"
 	done
-	remy=$(( $range - $yacc - 1 ))
-	n=0 ; while [ "$n" -lt $remy ]
+	remy=$(( $range - $yacc ))
+	n=0 ; while [ "$n" -le $remy ]
 	do
 		n=$(( $n + 1 ))
 		echo ""
@@ -128,6 +130,7 @@ function nav {
 function main {
 	while true; do
 		draw
+		echo -n "($posx, $posy)"
 		nav
 	done
 }
