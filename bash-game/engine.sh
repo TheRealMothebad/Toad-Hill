@@ -2,7 +2,7 @@
 
 function save {
 	printf "$( cat saves/$mapfile | sed '/posx/d' | sed '/map=/d' )\nmap=($( for i in "${map[@]}"; do printf "\"$i\" "; done ))\nposx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
-	printf "$mapfile" > saves/main.save
+	printf "mapfile=\"$mapfile\"\ninventory=($( for i in "${inventory[@]}"; do printf "\"$i\" "; done ))" > saves/main.save
 }
 
 function load {
@@ -203,9 +203,13 @@ function nav {
 		fi
 	elif [ $key == "p" ]; then
 		place
+	elif [ $key == "g" ]; then
+		standingon=$( for i in "${map[@]}"; do printf "$i" | grep "$plry $plrx"; done )
+		map=("${map[@]/$standingon}")
+		standingon=($standingon)
+		inventory+=("${standingon[2]}")
 	elif [ $key == ":" ]; then
-		printf "\n"
-		printf ":" && read cmd
+		printf "\n:" && read cmd
 		eval "$cmd"
 	elif [ $key == "q" ]; then
 		quit
@@ -217,7 +221,11 @@ function main {
 	prevposy="$posy"
 	while true; do
 		draw
-		printf "$mapfile ($posx, $posy)"
+		printf "$mapfile ($posx, $posy)\ninv:\n"
+		n=0; while [ $n -le ${#inventory} ]; do
+			printf "$n. ${inventory[$n]}\n"
+			n=$(( $n + 1 ))
+		done
 		nav
 	done
 }
@@ -225,8 +233,8 @@ function main {
 if ! [ -d saves ]; then
 	mkdir saves
 	cp maps/start.map saves
-	printf "start.map" > saves/main.save
+	printf "mapfile=\"start.map\"\ninventory=()" > saves/main.save
 fi
-mapfile=$( cat saves/main.save )
+eval $( cat saves/main.save )
 eval $( cat saves/$mapfile )
 main
