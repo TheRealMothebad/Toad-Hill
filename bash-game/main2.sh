@@ -32,8 +32,12 @@ function draw {
 		objx=${item[1]}
 		obj=${item[2]}
 
-		objy=$( echo "$objy" | sed 's/^0*//' )
-		objx=$( echo "$objx" | sed 's/^0*//' )
+		if [ $objy -gt 0 ]; then
+			objy=$( echo "$objy" | sed 's/^0*//' )
+		fi
+		if [ $objx -gt 0 ]; then
+			objx=$( echo "$objx" | sed 's/^0*//' )
+		fi
 
 		if [ "$objy" == "$yacc" ] && [ "$objx" == "$xacc" ]; then
 			# position of object to print matches last-printed object (overlap)
