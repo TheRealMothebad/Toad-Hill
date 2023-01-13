@@ -7,6 +7,7 @@ function save {
 
 function load {
 	save
+	eval $( cat maps/reset.map )
 	mapfile="$1"
 	if ! [ -f "saves/$mapfile" ]; then
 		cp maps/$mapfile saves
@@ -24,6 +25,12 @@ function win {
 	save
 	printf "\nyou won!\n"
 	exit
+}
+
+function edge {
+	if ! [ -z "$1" ]; then
+		load $1
+	fi
 }
 
 function place {
@@ -143,18 +150,30 @@ function nav {
 	if [ $key == "w" ] || [ $key == "k" ]; then
 		if [ $posy -gt 0 ]; then
 			posy=$(( $posy - 1 ))
+		else
+			edge $north
+			posx=$prevposx
 		fi
 	elif [ $key == "a" ] || [ $key == "h" ]; then
 		if [ $posx -gt 0 ]; then
 			posx=$(( $posx - 1 ))
+		else
+			edge $west
+			posy=$prevposy
 		fi
 	elif [ $key == "s" ] || [ $key == "j" ]; then
 		if [ $posy -lt $range ]; then
 			posy=$(( $posy + 1 ))
+		else
+			edge $south
+			posx=$prevposx
 		fi
 	elif [ $key == "d" ] || [ $key == "l" ]; then
 		if [ $posx -lt $domain ]; then
 			posx=$(( $posx + 1 ))
+		else
+			edge $east
+			posy=$prevposy
 		fi
 	elif [ $key == "p" ]; then
 		place
@@ -171,7 +190,7 @@ function main {
 	prevposx="$posx"
 	prevposy="$posy"
 	while true; do
-		draw
+		time draw
 		printf "$mapfile ($posx, $posy)"
 		nav
 	done

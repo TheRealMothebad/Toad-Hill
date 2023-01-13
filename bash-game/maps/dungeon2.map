@@ -1,7 +1,7 @@
 domain="36" && range="24"
 
-map=("15 16 <" "16 19 w" "07 30 q")
+map=("15 16 <" "16 19 w" "07 30 q" "09 10 ^")
 
-doors=("< dungeon.map")
+doors=("< dungeon.map" "^ vortex.map")
 
 posx="17" && posy="15"
