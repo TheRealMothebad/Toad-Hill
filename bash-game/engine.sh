@@ -2,8 +2,15 @@
 
 function quit {
 	echo "$( cat saves/$mapfile | sed '/posx/d' )
-posx=\"$posx\" && posy=\"$posy\"" > saves/$mapfile
+posx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
 	echo ""
+	exit
+}
+
+function win {
+	echo "$( cat saves/$mapfile | sed '/posx/d' )
+posx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
+	echo -e "\nyou won!"
 	exit
 }
 

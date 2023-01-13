@@ -1,6 +1,6 @@
 domain="36" && range="24"
 
-map=("15 16 <" "16 19 w")
+map=("15 16 <" "16 19 w" "07 30 q")
 
 doors=("< dungeon.map")
 
