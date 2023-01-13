@@ -1,15 +1,28 @@
 #!/bin/bash
 
-function quit {
+function save {
 	echo "$( cat saves/$mapfile | sed '/posx/d' )
 posx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
+	echo "$mapfile" > saves/main.save
+}
+
+function load {
+	save
+	mapfile="$1"
+	if ! [ -f "saves/$mapfile" ]; then
+		cp maps/$mapfile saves
+	fi
+	eval $( cat saves/$mapfile )
+}
+
+function quit {
+	save
 	echo ""
 	exit
 }
 
 function win {
-	echo "$( cat saves/$mapfile | sed '/posx/d' )
-posx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
+	save
 	echo -e "\nyou won!"
 	exit
 }
@@ -72,24 +85,10 @@ function draw {
 			for i in "${doors[@]}"; do
 				b=($i)
 				if [ $obj == "@" ] && [ $prevobj == "${b[0]}" ]; then
-					echo "$( cat saves/$mapfile | sed '/posx/d' )
-posx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
-					mapfile="${b[1]}"
-					echo "$mapfile" > saves/main.save
-					if ! [ -f "saves/$mapfile" ]; then
-						cp maps/$mapfile saves
-					fi
-					eval $( cat saves/$mapfile )
+					load ${b[1]}
 					main
 				elif [ $obj == "${b[0]}" ] && [ $prevobj == "@" ]; then
-					echo "$( cat saves/$mapfile | sed '/posx/d' )
-posx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
-					mapfile="${b[1]}"
-					echo "$mapfile" > saves/main.save
-					if ! [ -f "saves/$mapfile" ]; then
-						cp maps/$mapfile saves
-					fi
-					eval $( cat saves/$mapfile )
+					load ${b[1]}
 					main
 				fi
 			done
