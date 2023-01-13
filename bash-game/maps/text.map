@@ -1,0 +1,5 @@
+desc="asdfasdflkasdjfla you see an egg and a soup"
+options=("enter the soup" "soup" "eat the egg" "egg")
+soup="echo 'you chose to enter the soup'"
+egg="echo 'this doesn\'t exist yet'
+echo 'if you would like to bring eggs into existence, proceed'"
