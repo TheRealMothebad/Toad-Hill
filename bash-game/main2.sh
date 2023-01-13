@@ -3,6 +3,7 @@
 function quit {
 	echo "$( cat saves/$mapfile | sed '/posx/d' )
 posx=\"$posx\" && posy=\"$posy\"" > saves/$mapfile
+	echo ""
 	exit
 }
 
