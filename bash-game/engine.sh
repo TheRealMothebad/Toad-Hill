@@ -162,7 +162,7 @@ function nav {
 		place
 	elif [ $key == ":" ]; then
 		echo ""
-		echo -n ": " && read cmd
+		echo -n ":" && read cmd
 		eval "$cmd"
 	elif [ $key == "q" ]; then
 		quit
