@@ -29,7 +29,11 @@ function win {
 }
 
 function place {
-	map+=("$plry $plrx P")
+	if [ -z "$1" ]; then
+		map+=("$plry $plrx P")
+	else
+		map+=("$plry $plrx $1")
+	fi
 }
 
 function draw {
@@ -154,6 +158,8 @@ function nav {
 		if [ $posx -lt $domain ]; then
 			posx=$(( $posx + 1 ))
 		fi
+	elif [ $key == "p" ]; then
+		place
 	elif [ $key == ":" ]; then
 		echo ""
 		echo -n ": " && read cmd
