@@ -130,9 +130,9 @@ function draw {
 		if [ "$objy" == "$yacc" ] && [ "$objx" == "$xacc" ]
 		then
 			echo -ne "\b!"
-			if [ $obj == "@" ] && [ $prevobj == "#" ]; then
+			if [ $obj == "@" ] && [ $prevobj == "w" ]; then
 				win
-			elif [ $obj == "#" ] && [ $prevobj == "@" ]; then
+			elif [ $obj == "w" ] && [ $prevobj == "@" ]; then
 				win
 			elif [ $obj == "@" ] && [ $prevobj == "q" ]; then
 				quit
@@ -416,7 +416,7 @@ function menu {
 
 
 function main {
-	eval $( cat maps/test.map )
+	eval $( cat maps/dungeon.map )
 	menu "Welcome to Toad Hill! This game does not really exist yet, but here is something like a bash-based game engine. Use WASD (or vim binds) to navigate the menu and the game (right is select)." "Walk around" "centerprint_toppad && centerprint 'you are the @ symbol.' && centerprint 'use q to quit.' && sleep 2 && navloop" "Quit" "quit"
 }
 
