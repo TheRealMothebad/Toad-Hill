@@ -1,5 +1,9 @@
 #!/bin/bash
 
+function quit {
+	exit
+}
+
 function draw {
 	clear
 
@@ -47,9 +51,9 @@ function draw {
 			elif [ $obj == "w" ] && [ $prevobj == "@" ]; then
 				win
 			elif [ $obj == "@" ] && [ $prevobj == "q" ]; then
-				exit
+				quit
 			elif [ $obj == "q" ] && [ $prevobj == "@" ]; then
-				exit
+				quit
 			elif [ $obj == "@" ] && [ $prevobj == "s" ]; then
 				echo -n "you found a secret!"
 			elif [ $obj == "s" ] && [ $prevobj == "@" ]; then
@@ -58,10 +62,20 @@ function draw {
 			for i in "${doors[@]}"; do
 				b=($i)
 				if [ $obj == "@" ] && [ $prevobj == "${b[0]}" ]; then
-					eval $( cat ${b[1]} )
+					echo "${b[1]}" > saves/main.save
+					mapfile="${b[1]}"
+					if ! [ -f "saves/$mapfile" ]; then
+						cp maps/$mapfile saves
+					fi
+					eval $( cat saves/$mapfile )
 					main
 				elif [ $obj == "${b[0]}" ] && [ $prevobj == "@" ]; then
-					eval $( cat ${b[1]} )
+					echo "${b[1]}" > saves/main.save
+					mapfile="${b[1]}"
+					if ! [ -f "saves/$mapfile" ]; then
+						cp maps/$mapfile saves
+					fi
+					eval $( cat saves/$mapfile )
 					main
 				fi
 			done
@@ -123,7 +137,7 @@ function nav {
 	elif [ $key == ":" ]; then
 		echo -n ": " && read
 	elif [ $key == "q" ]; then
-		exit
+		quit
 	fi
 }
 
@@ -135,5 +149,11 @@ function main {
 	done
 }
 
-eval $( cat maps/start.map )
+if ! [ -d saves ]; then
+	mkdir saves
+	cp maps/start.map saves
+	echo "start.map" > saves/main.save
+fi
+mapfile=$( cat saves/main.save )
+eval $( cat saves/$mapfile )
 main
