@@ -28,6 +28,10 @@ function win {
 	exit
 }
 
+function place {
+	map+=("$plry $plrx P")
+}
+
 function draw {
 	clear
 
