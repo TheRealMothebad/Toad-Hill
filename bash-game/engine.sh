@@ -36,16 +36,31 @@ function place {
 }
 
 function inventory {
-	printf "\nInventory:\n"
-	n=0; while [ $n -lt ${#inventory} ]; do
-		printf "$n. ${inventory[$n]}\n"
-		n=$(( $n + 1 ))
-	done
-	printf "use item (enter number, leave empty to close): "
-	read use
-	if ! [ -z "$use" ]; then
-		printf "selected $use: ${inventory[$use]}"
-		read
+	if [ ${#inventory[@]} -gt 0 ]; then
+		printf "\nInventory (${#inventory[@]}):\n"
+		n=0; while [ $n -lt ${#inventory[@]} ]; do
+			echo "$n. ${inventory[$n]}"
+			n=$(( $n + 1 ))
+		done
+		printf "use item (enter number, leave empty to close): "
+		read use
+		if ! [ -z "$use" ]; then
+			if [[ $use =~ ^[0-9]+$ ]]; then
+				if [ $use -lt ${#inventory[@]} ]; then
+					map+=("$plry $plrx ${inventory[$(( $use ))]}")
+					inventory=("${inventory[@]:0:$use}" "${inventory[@]:$(( $use + 1 ))}")
+				else
+					printf "That item does not exist!\n"
+					sleep 0.5
+				fi
+			else
+				printf "Invalid entry!\n"
+				sleep 0.5
+			fi
+		fi
+	else
+		printf "Inventory is empty!\n"
+		sleep 0.5
 	fi
 }
 
@@ -219,9 +234,16 @@ function nav {
 		place
 	elif [ $key == "g" ]; then
 		standingon=$( for i in "${map[@]}"; do printf "$i" | grep "$plry $plrx"; done )
-		map=("${map[@]/$standingon}")
-		standingon=($standingon)
-		inventory+=("${standingon[2]}")
+		if ! [ -z "$standingon" ]; then
+			if [ ${#inventory[@]} -le 9 ]; then
+				map=("${map[@]/$standingon}")
+				standingon=($standingon)
+				inventory+=("${standingon[2]}")
+			else
+				printf "Inventory is full!\n"
+				sleep 0.5
+			fi
+		fi
 	elif [ $key == "i" ]; then
 		inventory
 	elif [ $key == ":" ]; then
