@@ -1,7 +1,8 @@
 #!/bin/bash
 
 function save {
-	echo "$( cat saves/$mapfile | sed '/posx/d' )
+	echo "$( cat saves/$mapfile | sed '/posx/d' | sed '/map=/d' )
+map=($( for i in "${map[@]}"; do echo -n "\"$i\" "; done ))
 posx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
 	echo "$mapfile" > saves/main.save
 }
