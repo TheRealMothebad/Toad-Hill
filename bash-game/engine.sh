@@ -1,10 +1,8 @@
 #!/bin/bash
 
 function save {
-	echo "$( cat saves/$mapfile | sed '/posx/d' | sed '/map=/d' )
-map=($( for i in "${map[@]}"; do echo -n "\"$i\" "; done ))
-posx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
-	echo "$mapfile" > saves/main.save
+	printf "$( cat saves/$mapfile | sed '/posx/d' | sed '/map=/d' )\nmap=($( for i in "${map[@]}"; do printf "\"$i\" "; done ))\nposx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
+	printf "$mapfile" > saves/main.save
 }
 
 function load {
@@ -18,13 +16,13 @@ function load {
 
 function quit {
 	save
-	echo ""
+	printf "\n"
 	exit
 }
 
 function win {
 	save
-	echo -e "\nyou won!"
+	printf "\nyou won!\n"
 	exit
 }
 
@@ -69,15 +67,15 @@ function draw {
 		obj=${item[2]}
 
 		if [ $objy -gt 0 ]; then
-			objy=$( echo "$objy" | sed 's/^0*//' )
+			objy=$( printf "$objy" | sed 's/^0*//' )
 		fi
 		if [ $objx -gt 0 ]; then
-			objx=$( echo "$objx" | sed 's/^0*//' )
+			objx=$( printf "$objx" | sed 's/^0*//' )
 		fi
 
 		if [ "$objy" == "$yacc" ] && [ "$objx" == "$xacc" ]; then
 			# position of object to print matches last-printed object (overlap)
-			echo -ne "\b!"
+			printf "\b!"
 			if [ $obj == "@" ] && [ $prevobj == "w" ]; then
 				win
 			elif [ $obj == "w" ] && [ $prevobj == "@" ]; then
@@ -87,9 +85,9 @@ function draw {
 			elif [ $obj == "q" ] && [ $prevobj == "@" ]; then
 				quit
 			elif [ $obj == "@" ] && [ $prevobj == "s" ]; then
-				echo -n "you found a secret!"
+				printf "you found a secret!"
 			elif [ $obj == "s" ] && [ $prevobj == "@" ]; then
-				echo -n "you found a secret!"
+				printf "you found a secret!"
 			fi
 			for i in "${doors[@]}"; do
 				b=($i)
@@ -109,22 +107,22 @@ function draw {
 				m=$(( $m + 1 ))
 				xspace+=" "
 			done
-			echo -n "$xspace$obj"
+			printf "$xspace$obj"
 			xacc="$objx"
 		else
 			# different row, different position
 			yunacc=$(( $objy - $yacc ))
 			m=0 ; while [ $m -lt $yunacc ]; do
 				m=$(( $m + 1 ))
-				echo ""
+				printf "\n"
 			done
 			xspace=""
 			m=0 ; while [ $m -lt $objx ]; do
 				m=$(( $m + 1 ))
 				xspace+=" "
 			done
-			echo -n "$xspace"
-			echo -n "$obj"
+			printf "$xspace"
+			printf "$obj"
 			yacc="$objy"
 			xacc="$objx"
 		fi
@@ -134,7 +132,7 @@ function draw {
 	n=0 ; while [ "$n" -le $remy ]
 	do
 		n=$(( $n + 1 ))
-		echo ""
+		printf "\n"
 	done
 }
 
@@ -161,8 +159,8 @@ function nav {
 	elif [ $key == "p" ]; then
 		place
 	elif [ $key == ":" ]; then
-		echo ""
-		echo -n ":" && read cmd
+		printf "\n"
+		printf ":" && read cmd
 		eval "$cmd"
 	elif [ $key == "q" ]; then
 		quit
@@ -174,7 +172,7 @@ function main {
 	prevposy="$posy"
 	while true; do
 		draw
-		echo -n "$mapfile ($posx, $posy)"
+		printf "$mapfile ($posx, $posy)"
 		nav
 	done
 }
@@ -182,7 +180,7 @@ function main {
 if ! [ -d saves ]; then
 	mkdir saves
 	cp maps/start.map saves
-	echo "start.map" > saves/main.save
+	printf "start.map" > saves/main.save
 fi
 mapfile=$( cat saves/main.save )
 eval $( cat saves/$mapfile )
