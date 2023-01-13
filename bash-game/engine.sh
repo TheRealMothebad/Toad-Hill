@@ -59,7 +59,7 @@ function inventory {
 			fi
 		fi
 	else
-		printf "Inventory is empty!\n"
+		printf "\nInventory is empty!\n"
 		sleep 0.5
 	fi
 }
@@ -240,7 +240,7 @@ function nav {
 				standingon=($standingon)
 				inventory+=("${standingon[2]}")
 			else
-				printf "Inventory is full!\n"
+				printf "\nInventory is full!\n"
 				sleep 0.5
 			fi
 		fi
