@@ -1,6 +1,7 @@
-domain="36" range="24"
-posx="17" && posy="15"
+domain="36" && range="24"
 
 map=("15 16 <" "16 19 w")
 
 doors=("< dungeon.map")
+
+posx="17" && posy="15"

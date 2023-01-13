@@ -62,16 +62,20 @@ function draw {
 			for i in "${doors[@]}"; do
 				b=($i)
 				if [ $obj == "@" ] && [ $prevobj == "${b[0]}" ]; then
-					echo "${b[1]}" > saves/main.save
+					echo "$( cat saves/$mapfile | sed '/posx/d' )
+posx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
 					mapfile="${b[1]}"
+					echo "$mapfile" > saves/main.save
 					if ! [ -f "saves/$mapfile" ]; then
 						cp maps/$mapfile saves
 					fi
 					eval $( cat saves/$mapfile )
 					main
 				elif [ $obj == "${b[0]}" ] && [ $prevobj == "@" ]; then
-					echo "${b[1]}" > saves/main.save
+					echo "$( cat saves/$mapfile | sed '/posx/d' )
+posx=\"$prevposx\" && posy=\"$prevposy\"" > saves/$mapfile
 					mapfile="${b[1]}"
+					echo "$mapfile" > saves/main.save
 					if ! [ -f "saves/$mapfile" ]; then
 						cp maps/$mapfile saves
 					fi
@@ -118,6 +122,8 @@ function draw {
 
 function nav {
 	read -s -n 1 key
+	prevposy=$posy
+	prevposx=$posx
 	if [ $key == "w" ] || [ $key == "k" ]; then
 		if [ $posy -gt 0 ]; then
 			posy=$(( $posy - 1 ))
@@ -142,9 +148,11 @@ function nav {
 }
 
 function main {
+	prevposx="$posx"
+	prevposy="$posy"
 	while true; do
 		draw
-		echo -n "($posx, $posy)"
+		echo -n "$mapfile ($posx, $posy) P ($prevposx, $prevposy)"
 		nav
 	done
 }
