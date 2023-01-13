@@ -144,7 +144,9 @@ function nav {
 			posx=$(( $posx + 1 ))
 		fi
 	elif [ $key == ":" ]; then
-		echo -n ": " && read
+		echo ""
+		echo -n ": " && read cmd
+		eval "$cmd"
 	elif [ $key == "q" ]; then
 		quit
 	fi
