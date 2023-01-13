@@ -38,6 +38,8 @@ function place {
 function draw {
 	clear
 
+	pad=true
+
 	plrzerx=""
 	n=0 ; while [ "$n" -lt $(( 2 - ${#posx} )) ]
 	do
@@ -89,6 +91,14 @@ function draw {
 				printf "you found a secret!"
 			elif [ $obj == "s" ] && [ $prevobj == "@" ]; then
 				printf "you found a secret!"
+			elif [ $obj == "@" ] && [ $prevobj == "#" ]; then
+				posx=$prevposx && posy=$prevposy
+				draw
+				pad=false && break
+			elif [ $obj == "#" ] && [ $prevobj == "@" ]; then
+				posx=$prevposx && posy=$prevposy
+				draw
+				pad=false && break
 			fi
 			for i in "${doors[@]}"; do
 				b=($i)
@@ -129,12 +139,14 @@ function draw {
 		fi
 		prevobj="$obj"
 	done
-	remy=$(( $range - $yacc ))
-	n=0 ; while [ "$n" -le $remy ]
-	do
-		n=$(( $n + 1 ))
-		printf "\n"
-	done
+	if [ $pad == true ]; then
+		remy=$(( $range - $yacc ))
+		n=0 ; while [ "$n" -le $remy ]
+		do
+			n=$(( $n + 1 ))
+			printf "\n"
+		done
+	fi
 }
 
 function nav {
@@ -204,7 +216,7 @@ function main {
 	prevposx="$posx"
 	prevposy="$posy"
 	while true; do
-		time draw
+		draw
 		printf "$mapfile ($posx, $posy)"
 		nav
 	done
