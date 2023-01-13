@@ -4,6 +4,6 @@ south="vortex.map"
 
 map=("06 06 B")
 
-doors=("B book.map")
+doors=("B vortex-annex.map")
 
-posy="11"
+posy="06" && posx="07"
