@@ -243,10 +243,10 @@ function parseobjects {
 	maxy=$(( $miny + $range ))
 	#echo "map [$mapx, $mapy], meaning domain [$minx, $maxx] and range [$miny, $maxy]"
 	thismapobjects=("")
-	n=0 ; while [ "$n" -lt ${#fullobjects[@]} ]
+	n=0 ; while [ "$n" -lt ${#map[@]} ]
 	do
 		m=0
-		for i in ${fullobjects[$n]}
+		for i in ${map[$n]}
 		do
 			m=$(( $m + 1 ))
 			if [ $m == "1" ] ; then
@@ -416,7 +416,7 @@ function menu {
 
 
 function main {
-	eval $( cat maps/dungeon.map )
+	eval $( cat maps/start.map )
 	menu "Welcome to Toad Hill! This game does not really exist yet, but here is something like a bash-based game engine. Use WASD (or vim binds) to navigate the menu and the game (right is select)." "Walk around" "centerprint_toppad && centerprint 'you are the @ symbol.' && centerprint 'use q to quit.' && sleep 2 && navloop" "Quit" "quit"
 }
 
