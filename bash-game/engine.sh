@@ -35,6 +35,20 @@ function place {
 	fi
 }
 
+function inventory {
+	printf "\nInventory:\n"
+	n=0; while [ $n -lt ${#inventory} ]; do
+		printf "$n. ${inventory[$n]}\n"
+		n=$(( $n + 1 ))
+	done
+	printf "use item (enter number, leave empty to close): "
+	read use
+	if ! [ -z "$use" ]; then
+		printf "selected $use: ${inventory[$use]}"
+		read
+	fi
+}
+
 function draw {
 	clear
 
@@ -208,6 +222,8 @@ function nav {
 		map=("${map[@]/$standingon}")
 		standingon=($standingon)
 		inventory+=("${standingon[2]}")
+	elif [ $key == "i" ]; then
+		inventory
 	elif [ $key == ":" ]; then
 		printf "\n:" && read cmd
 		eval "$cmd"
@@ -221,11 +237,7 @@ function main {
 	prevposy="$posy"
 	while true; do
 		draw
-		printf "$mapfile ($posx, $posy)\ninv:\n"
-		n=0; while [ $n -le ${#inventory} ]; do
-			printf "$n. ${inventory[$n]}\n"
-			n=$(( $n + 1 ))
-		done
+		printf "$mapfile ($posx, $posy)"
 		nav
 	done
 }
