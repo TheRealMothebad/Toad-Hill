@@ -1,3 +1,4 @@
+domain="36" range="24"
 posx="17" && posy="15"
 
 map=("15 16 <" "16 19 w")
