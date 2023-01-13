@@ -1,6 +1,8 @@
 #!/bin/bash
 
 function quit {
+	echo "$( cat saves/$mapfile | sed '/posx/d' )
+posx=\"$posx\" && posy=\"$posy\"" > saves/$mapfile
 	exit
 }
 
@@ -152,7 +154,7 @@ function main {
 	prevposy="$posy"
 	while true; do
 		draw
-		echo -n "$mapfile ($posx, $posy) P ($prevposx, $prevposy)"
+		echo -n "$mapfile ($posx, $posy)"
 		nav
 	done
 }
