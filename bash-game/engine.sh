@@ -27,12 +27,6 @@ function win {
 	exit
 }
 
-function edge {
-	if ! [ -z "$1" ]; then
-		load $1
-	fi
-}
-
 function place {
 	if [ -z "$1" ]; then
 		map+=("$plry $plrx P")
@@ -151,29 +145,49 @@ function nav {
 		if [ $posy -gt 0 ]; then
 			posy=$(( $posy - 1 ))
 		else
-			edge $north
+			if ! [ -z "$north" ]; then
+				load $north
+			fi
 			posx=$prevposx
+			if [ $posx -gt $domain ]; then
+				posx=$domain
+			fi
 		fi
 	elif [ $key == "a" ] || [ $key == "h" ]; then
 		if [ $posx -gt 0 ]; then
 			posx=$(( $posx - 1 ))
 		else
-			edge $west
+			if ! [ -z "$west" ]; then
+				load $west
+			fi
 			posy=$prevposy
+			if [ $posy -gt $range ]; then
+				posy=$range
+			fi
 		fi
 	elif [ $key == "s" ] || [ $key == "j" ]; then
 		if [ $posy -lt $range ]; then
 			posy=$(( $posy + 1 ))
 		else
-			edge $south
+			if ! [ -z "$south" ]; then
+				load $south
+			fi
 			posx=$prevposx
+			if [ $posx -gt $domain ]; then
+				posx=$domain
+			fi
 		fi
 	elif [ $key == "d" ] || [ $key == "l" ]; then
 		if [ $posx -lt $domain ]; then
 			posx=$(( $posx + 1 ))
 		else
-			edge $east
+			if ! [ -z "$east" ]; then
+				load $east
+			fi
 			posy=$prevposy
+			if [ $posy -gt $range ]; then
+				posy=$range
+			fi
 		fi
 	elif [ $key == "p" ]; then
 		place
