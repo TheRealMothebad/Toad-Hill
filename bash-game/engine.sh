@@ -50,17 +50,14 @@ function inventory {
 					map+=("$plry $plrx ${inventory[$(( $use ))]}")
 					inventory=("${inventory[@]:0:$use}" "${inventory[@]:$(( $use + 1 ))}")
 				else
-					printf "That item does not exist!\n"
-					sleep 0.5
+					printf "That item does not exist!\n" && sleep 0.5
 				fi
 			else
-				printf "Invalid entry!\n"
-				sleep 0.5
+				printf "Invalid entry!\n" && sleep 0.5
 			fi
 		fi
 	else
-		printf "\nInventory is empty!\n"
-		sleep 0.5
+		printf "\nInventory is empty!\n" && sleep 0.5
 	fi
 }
 
@@ -285,8 +282,7 @@ function nav {
 				standingon=($standingon)
 				inventory+=("${standingon[2]}")
 			else
-				printf "\nInventory is full!\n"
-				sleep 0.5
+				printf "\nInventory is full!\n" && sleep 0.5
 			fi
 		fi
 	elif [ $key == "i" ]; then
