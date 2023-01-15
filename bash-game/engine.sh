@@ -64,6 +64,52 @@ function inventory {
 	fi
 }
 
+function npcs {
+	npcbuffer=()
+	for i in "${npcs[@]}"; do
+		i=($i)
+		npcy="${i[0]}"
+		npcx="${i[1]}"
+		npc="${i[2]}"
+
+		if [ $npcy -gt 0 ]; then
+			npcy=$( printf "$npcy" | sed 's/^0*//' )
+		fi
+		if [ $npcx -gt 0 ]; then
+			npcx=$( printf "$npcx" | sed 's/^0*//' )
+		fi
+
+		if [ $npcx -lt $domain ]; then
+			npcx=$(( $npcx + 1 ))
+		fi
+		if [ $npcy -lt $range ]; then
+			npcy=$(( $npcy + 1 ))
+		fi
+
+		npczerx=""
+		n=0 ; while [ "$n" -lt $(( 2 - ${#npcx} )) ]
+		do
+			n=$(( $n + 1 ))
+			npczerx+="0"
+		done
+		npczery=""
+		n=0 ; while [ "$n" -lt $(( 2 - ${#npcy} )) ]
+		do
+			n=$(( $n + 1 ))
+			npczery+="0"
+		done
+
+		npcx="$npczerx$npcx"
+		npcy="$npczery$npcy"
+
+		npcbuffer+=("$npcy $npcx $npc")
+	done
+	npcs=()
+	for i in "${npcbuffer[@]}"; do
+		npcs+=("$i")
+	done
+}
+
 function draw {
 	clear
 
@@ -84,8 +130,7 @@ function draw {
 	plrx="$plrzerx$posx"
 	plry="$plrzery$posy"
 
-	objects=("${map[@]}")
-	objects+=("$plry $plrx @")
+	objects=("${map[@]}" "$plry $plrx @" "${npcs[@]}")
 	IFS=$'\n' objects=($(sort <<<"${objects[*]}"))
 	unset IFS
 
@@ -258,9 +303,9 @@ function main {
 	prevposx="$posx"
 	prevposy="$posy"
 	while true; do
-		draw
-		printf "$mapfile ($posx, $posy)"
+		draw && printf "$mapfile ($posx, $posy)"
 		nav
+		npcs
 	done
 }
 
