@@ -153,9 +153,9 @@ function draw {
 		if [ "$objy" == "$yacc" ] && [ "$objx" == "$xacc" ]; then
 			# position of object to print matches last-printed object (overlap)
 			printf "\b!"
-			if [ $obj == "@" ] && [ $prevobj == "w" ]; then
+			if [ $obj == "x" ] && [ $prevobj == "i" ]; then
 				win
-			elif [ $obj == "w" ] && [ $prevobj == "@" ]; then
+			elif [ $obj == "i" ] && [ $prevobj == "x" ]; then
 				win
 			elif [ $obj == "@" ] && [ $prevobj == "q" ]; then
 				quit
