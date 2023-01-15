@@ -174,11 +174,9 @@ function draw {
 			for i in "${doors[@]}"; do
 				b=($i)
 				if [ $obj == "@" ] && [ $prevobj == "${b[0]}" ]; then
-					load ${b[1]}
-					main
+					load ${b[1]} && main
 				elif [ $obj == "${b[0]}" ] && [ $prevobj == "@" ]; then
-					load ${b[1]}
-					main
+					load ${b[1]} && main
 				fi
 			done
 		elif [ "$objy" == "$yacc" ] && ! [ "$objx" == "$xacc" ]; then
@@ -299,7 +297,7 @@ function main {
 	prevposx="$posx"
 	prevposy="$posy"
 	while true; do
-		draw && printf "$mapfile ($posx, $posy)"
+		draw && printf "$mapfile ($posx, $posy) -- $desc"
 		nav
 		npcs
 	done

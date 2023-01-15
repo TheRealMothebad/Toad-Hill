@@ -1,9 +1,6 @@
+desc="You have found a secret annex room above the vortex!"
 domain="24" && range="11"
-
 south="vortex.map"
-
 map=("06 06 B")
-
 doors=("B book.map")
-
 posy="11"

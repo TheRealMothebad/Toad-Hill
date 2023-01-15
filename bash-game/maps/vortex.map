@@ -1,9 +1,6 @@
+desc="Welcome to the vortex."
 domain="11" && range="11"
-
 north="vortex-annex.map"
-
 map=("05 05 ^")
-
 doors=("^ dungeon2.map")
-
 posx="5" && posy="3"
