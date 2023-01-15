@@ -2,5 +2,6 @@ desc="This is a secret pocket through the vortex annex."
 domain="24" && range="11"
 south="vortex.map"
 map=("06 06 B")
+npcs=("05 08 m")
 doors=("B vortex-annex.map")
 posy="06" && posx="07"
