@@ -76,11 +76,15 @@ function npcs {
 			npcx=$( printf "$npcx" | sed 's/^0*//' )
 		fi
 
-		if [ $npcx -lt $domain ]; then
+		if [ $npcx -lt $plrx ]; then
 			npcx=$(( $npcx + 1 ))
+		elif [ $npcx -gt $plrx ]; then
+			npcx=$(( $npcx - 1 ))
 		fi
-		if [ $npcy -lt $range ]; then
+		if [ $npcy -lt $plry ]; then
 			npcy=$(( $npcy + 1 ))
+		elif [ $npcy -gt $plry ]; then
+			npcy=$(( $npcy - 1 ))
 		fi
 
 		npczerx=""
