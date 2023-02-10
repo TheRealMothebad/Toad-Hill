@@ -1,7 +1,11 @@
 # Toad Hill
+
 toads.
 
+This repository is a bundling of several projects related to the Toad Hill chronicles.
+
 ## projects:
+
 - [google classroom stories](CLASSROOM.md)
 	- a little choose your own adventure story
 - [bash game](bash-game/bash.md)
@@ -15,5 +19,6 @@ toads.
 	- not sure which project it goes with yet 
 
 ## reference:
+
 - [lore](https://docs.google.com/document/d/18cSac9gC4KKNzgSY6ALmh9VTieL2en9fhQKrmIdDlSU/edit?usp=sharing) of the toads
 - [misc. notes](reference/notes.md)
