@@ -117,14 +117,12 @@ function draw {
 	pad=true
 
 	plrzerx=""
-	n=0 ; while [ "$n" -lt $(( 2 - ${#posx} )) ]
-	do
+	n=0 ; while [ "$n" -lt $(( 2 - ${#posx} )) ]; do
 		n=$(( $n + 1 ))
 		plrzerx+="0"
 	done
 	plrzery=""
-	n=0 ; while [ "$n" -lt $(( 2 - ${#posy} )) ]
-	do
+	n=0 ; while [ "$n" -lt $(( 2 - ${#posy} )) ]; do
 		n=$(( $n + 1 ))
 		plrzery+="0"
 	done
@@ -144,42 +142,30 @@ function draw {
 		objx=${item[1]}
 		obj=${item[2]}
 
-		if [ $objy -gt 0 ]; then
-			objy=$( printf "$objy" | sed 's/^0*//' )
-		fi
-		if [ $objx -gt 0 ]; then
-			objx=$( printf "$objx" | sed 's/^0*//' )
-		fi
+		if [ $objy -gt 0 ]; then objy=$( printf "$objy" | sed 's/^0*//' ); fi
+		if [ $objx -gt 0 ]; then objx=$( printf "$objx" | sed 's/^0*//' ); fi
 
 		if [ "$objy" == "$yacc" ] && [ "$objx" == "$xacc" ]; then
 			# position of object to print matches last-printed object (overlap)
 			printf "\b!"
 			case ${obj}+${prevobj} in
 				x+i | i+x)
-					win
-				;;
-
+					win ;;
 				q+@ | @+q)
-					quit
-				;;
-
+					quit ;;
 				s+@ | @+s)
-					printf "you found a secret!"
-				;;
-
+					printf "you found a secret!" ;;
 				\#+@ | @+\#)
 					posx=$prevposx && posy=$prevposy
 					draw
-					pad=false && break
-				;;
+					pad=false && break ;;
 			esac
 			for i in "${doors[@]}"; do
-				b=($i)
-				if [ $obj == "@" ] && [ $prevobj == "${b[0]}" ]; then
-					load ${b[1]} && main
-				elif [ $obj == "${b[0]}" ] && [ $prevobj == "@" ]; then
-					load ${b[1]} && main
-				fi
+				b=($i); doortile=${b[0]}; doormap=${b[1]}
+				case ${obj}+${prevobj} in
+					@+$doortile | $doortile+@)
+						load $doormap && main ;;
+				esac
 			done
 		elif [ "$objy" == "$yacc" ] && ! [ "$objx" == "$xacc" ]; then
 			# same row, different position
@@ -225,9 +211,7 @@ function nav {
 	prevposx=$posx
 	read -s -n 1 key
 	case $key in
-
-		# UP
-		w | k)
+		w | k) # UP
 			if [ $posy -gt 0 ]; then
 				posy=$(( $posy - 1 ))
 			else
@@ -238,11 +222,8 @@ function nav {
 				if [ $posx -gt $domain ]; then
 					posx=$domain
 				fi
-			fi
-		;;
-
-		# LEFT
-		a | h)
+			fi ;;
+		a | h) # LEFT
 			if [ $posx -gt 0 ]; then
 				posx=$(( $posx - 1 ))
 			else
@@ -253,11 +234,8 @@ function nav {
 				if [ $posy -gt $range ]; then
 					posy=$range
 				fi
-			fi
-		;;
-
-		# DOWN
-		s | j)
+			fi ;;
+		s | j) # DOWN
 			if [ $posy -lt $range ]; then
 				posy=$(( $posy + 1 ))
 			else
@@ -268,11 +246,8 @@ function nav {
 				if [ $posx -gt $domain ]; then
 					posx=$domain
 				fi
-			fi
-		;;
-
-		# RIGHT
-		d | l)
+			fi ;;
+		d | l) # RIGHT
 			if [ $posx -lt $domain ]; then
 				posx=$(( $posx + 1 ))
 			else
@@ -283,16 +258,10 @@ function nav {
 				if [ $posy -gt $range ]; then
 					posy=$range
 				fi
-			fi
-		;;
-
-		# PLACE
-		p)
-			place
-		;;
-
-		# GRAB
-		g)
+			fi ;;
+		p) # PLACE
+			place ;;
+		g) # GRAB
 			standingon=$( for i in "${map[@]}"; do printf "$i" | grep "$plry $plrx"; done )
 			if ! [ -z "$standingon" ]; then
 				if [ ${#inventory[@]} -le 9 ]; then
@@ -302,27 +271,14 @@ function nav {
 				else
 					printf "\nInventory is full!\n" && sleep 0.5
 				fi
-			fi
-		;;
-
-		# INVENTORY
-		i)
-			inventory
-		;;
-
-		# COMMAND
-		:)
+			fi ;;
+		i) # INVENTORY
+			inventory ;;
+		:) # COMMAND
 			printf "\n:" && read cmd
-			eval "$cmd"
-		;;
-
-		# QUIT
-		q)
-			quit
-		;;
-
-		*)
-		;;
+			eval "$cmd" ;;
+		q) # QUIT
+			quit ;;
 	esac
 }
 
