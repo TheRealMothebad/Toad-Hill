@@ -154,27 +154,25 @@ function draw {
 		if [ "$objy" == "$yacc" ] && [ "$objx" == "$xacc" ]; then
 			# position of object to print matches last-printed object (overlap)
 			printf "\b!"
-			if [ $obj == "x" ] && [ $prevobj == "i" ]; then
-				win
-			elif [ $obj == "i" ] && [ $prevobj == "x" ]; then
-				win
-			elif [ $obj == "@" ] && [ $prevobj == "q" ]; then
-				quit
-			elif [ $obj == "q" ] && [ $prevobj == "@" ]; then
-				quit
-			elif [ $obj == "@" ] && [ $prevobj == "s" ]; then
-				printf "you found a secret!"
-			elif [ $obj == "s" ] && [ $prevobj == "@" ]; then
-				printf "you found a secret!"
-			elif [ $obj == "@" ] && [ $prevobj == "#" ]; then
-				posx=$prevposx && posy=$prevposy
-				draw
-				pad=false && break
-			elif [ $obj == "#" ] && [ $prevobj == "@" ]; then
-				posx=$prevposx && posy=$prevposy
-				draw
-				pad=false && break
-			fi
+			case ${obj}+${prevobj} in
+				x+i | i+x)
+					win
+				;;
+
+				q+@ | @+q)
+					quit
+				;;
+
+				s+@ | @+s)
+					printf "you found a secret!"
+				;;
+
+				\#+@ | @+\#)
+					posx=$prevposx && posy=$prevposy
+					draw
+					pad=false && break
+				;;
+			esac
 			for i in "${doors[@]}"; do
 				b=($i)
 				if [ $obj == "@" ] && [ $prevobj == "${b[0]}" ]; then
@@ -223,78 +221,109 @@ function draw {
 }
 
 function nav {
-	read -s -n 1 key
 	prevposy=$posy
 	prevposx=$posx
-	if [ $key == "w" ] || [ $key == "k" ]; then
-		if [ $posy -gt 0 ]; then
-			posy=$(( $posy - 1 ))
-		else
-			if ! [ -z "$north" ]; then
-				load $north
-			fi
-			posx=$prevposx
-			if [ $posx -gt $domain ]; then
-				posx=$domain
-			fi
-		fi
-	elif [ $key == "a" ] || [ $key == "h" ]; then
-		if [ $posx -gt 0 ]; then
-			posx=$(( $posx - 1 ))
-		else
-			if ! [ -z "$west" ]; then
-				load $west
-			fi
-			posy=$prevposy
-			if [ $posy -gt $range ]; then
-				posy=$range
-			fi
-		fi
-	elif [ $key == "s" ] || [ $key == "j" ]; then
-		if [ $posy -lt $range ]; then
-			posy=$(( $posy + 1 ))
-		else
-			if ! [ -z "$south" ]; then
-				load $south
-			fi
-			posx=$prevposx
-			if [ $posx -gt $domain ]; then
-				posx=$domain
-			fi
-		fi
-	elif [ $key == "d" ] || [ $key == "l" ]; then
-		if [ $posx -lt $domain ]; then
-			posx=$(( $posx + 1 ))
-		else
-			if ! [ -z "$east" ]; then
-				load $east
-			fi
-			posy=$prevposy
-			if [ $posy -gt $range ]; then
-				posy=$range
-			fi
-		fi
-	elif [ $key == "p" ]; then
-		place
-	elif [ $key == "g" ]; then
-		standingon=$( for i in "${map[@]}"; do printf "$i" | grep "$plry $plrx"; done )
-		if ! [ -z "$standingon" ]; then
-			if [ ${#inventory[@]} -le 9 ]; then
-				map=("${map[@]/$standingon}")
-				standingon=($standingon)
-				inventory+=("${standingon[2]}")
+	read -s -n 1 key
+	case $key in
+
+		# UP
+		w | k)
+			if [ $posy -gt 0 ]; then
+				posy=$(( $posy - 1 ))
 			else
-				printf "\nInventory is full!\n" && sleep 0.5
+				if ! [ -z "$north" ]; then
+					load $north
+				fi
+				posx=$prevposx
+				if [ $posx -gt $domain ]; then
+					posx=$domain
+				fi
 			fi
-		fi
-	elif [ $key == "i" ]; then
-		inventory
-	elif [ $key == ":" ]; then
-		printf "\n:" && read cmd
-		eval "$cmd"
-	elif [ $key == "q" ]; then
-		quit
-	fi
+		;;
+
+		# LEFT
+		a | h)
+			if [ $posx -gt 0 ]; then
+				posx=$(( $posx - 1 ))
+			else
+				if ! [ -z "$west" ]; then
+					load $west
+				fi
+				posy=$prevposy
+				if [ $posy -gt $range ]; then
+					posy=$range
+				fi
+			fi
+		;;
+
+		# DOWN
+		s | j)
+			if [ $posy -lt $range ]; then
+				posy=$(( $posy + 1 ))
+			else
+				if ! [ -z "$south" ]; then
+					load $south
+				fi
+				posx=$prevposx
+				if [ $posx -gt $domain ]; then
+					posx=$domain
+				fi
+			fi
+		;;
+
+		# RIGHT
+		d | l)
+			if [ $posx -lt $domain ]; then
+				posx=$(( $posx + 1 ))
+			else
+				if ! [ -z "$east" ]; then
+					load $east
+				fi
+				posy=$prevposy
+				if [ $posy -gt $range ]; then
+					posy=$range
+				fi
+			fi
+		;;
+
+		# PLACE
+		p)
+			place
+		;;
+
+		# GRAB
+		g)
+			standingon=$( for i in "${map[@]}"; do printf "$i" | grep "$plry $plrx"; done )
+			if ! [ -z "$standingon" ]; then
+				if [ ${#inventory[@]} -le 9 ]; then
+					map=("${map[@]/$standingon}")
+					standingon=($standingon)
+					inventory+=("${standingon[2]}")
+				else
+					printf "\nInventory is full!\n" && sleep 0.5
+				fi
+			fi
+		;;
+
+		# INVENTORY
+		i)
+			inventory
+		;;
+
+		# COMMAND
+		:)
+			printf "\n:" && read cmd
+			eval "$cmd"
+		;;
+
+		# QUIT
+		q)
+			quit
+		;;
+
+		*)
+		;;
+	esac
 }
 
 function main {
