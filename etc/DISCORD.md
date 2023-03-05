@@ -3,7 +3,7 @@
 _toad hill game in a discord bot_
 
 - __code in `bot/` folder__
-- Structure (objects) brainstorm in [Toad Bot Code Plan](reference/Toad%20Bot%20Code%20Plan.md).
+- Structure (objects) brainstorm in [Toad Bot Code Plan](Toad%20Bot%20Code%20Plan.md).
 	- Original brainstorm in [google doc](https://docs.google.com/document/d/16jl7XO-29eVHYZbQqHHwulq8Uk0VHl2lobnW14eOpwM/edit?usp=sharing).
 
 ## Running ToadBot.py through a discord bot

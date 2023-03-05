@@ -1,0 +1,8 @@
+{
+	"nodes":[
+		{"type":"file","file":"README.md","id":"b68e807baf60c469","x":-320,"y":-1680,"width":600,"height":840},
+		{"type":"file","file":"etc/brainstorm.md","id":"b287917cb76a9541","x":320,"y":-1680,"width":400,"height":400,"color":"2"},
+		{"id":"0611fbfb3f262030","x":-760,"y":-1240,"width":400,"height":400,"type":"file","file":"bash-game/bash.md"}
+	],
+	"edges":[]
+}

@@ -5,3 +5,6 @@ tok.cpython-39.pyc
 tok.cpython-37.pyc
 __pycache__
 .obsidian/
+*snarf
+*rom
+*sym
