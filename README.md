@@ -17,6 +17,7 @@ This repository is a bundling of several projects related to the Toad Hill chron
 	- toad hill roguelike
 - [music](MUSIC.md)
 	- not sure which project it goes with yet 
+- also related: the [cat game](https://cat.tivub.xyz/)
 
 ## reference:
 
